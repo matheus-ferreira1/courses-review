@@ -1,17 +1,19 @@
 import express, { NextFunction, Request, Response } from "express";
 import cors from "cors";
+import "express-async-errors";
 import "dotenv/config";
 
 import { AppError } from "../errors/AppError";
-import { routes } from "./routes";
+import { routes } from "../http/routes";
+import { errors } from "celebrate";
+
+const PORT = process.env.PORT || 3001;
 
 const app = express();
 
 app.use(express.json());
 app.use(cors());
-
-const PORT = process.env.PORT || 3001;
-
+app.use(errors());
 app.use(routes);
 
 app.use(
