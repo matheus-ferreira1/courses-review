@@ -1,0 +1,64 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+
+// User table to store user information
+model User {
+  id        Int      @id @default(autoincrement())
+  email     String   @unique
+  password  String
+  name      String
+  comments  Comment[] // Comments written by the user
+  ratings   Rating[] // Ratings given by the user
+}
+
+// Educator table to store information about educators
+model Educator {
+  id        Int      @id @default(autoincrement())
+  name      String
+  courses   Course[] // Courses taught by the educator
+}
+
+// Course table to store course information
+model Course {
+  id          Int       @id @default(autoincrement())
+  title       String
+  description String
+  price       Float
+  educator    Educator  @relation(fields: [educatorId], references: [id])
+  educatorId  Int
+  comments    Comment[] // Comments for the course
+  ratings     Rating[] // Ratings for the course
+}
+
+// Comment table to store comments about courses
+model Comment {
+  id        Int      @id @default(autoincrement())
+  text      String
+  course    Course   @relation(fields: [courseId], references: [id])
+  courseId  Int
+  user      User     @relation(fields: [userId], references: [id])
+  userId    Int
+}
+
+// Rating table to store ratings for courses
+model Rating {
+  id        Int      @id @default(autoincrement())
+  value     Int      // Rating value from 0 to 5
+  course    Course   @relation(fields: [courseId], references: [id])
+  courseId  Int
+  user      User     @relation(fields: [userId], references: [id])
+  userId    Int
+}
