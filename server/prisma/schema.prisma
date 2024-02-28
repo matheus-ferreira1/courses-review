@@ -13,52 +13,71 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-
-// User table to store user information
 model User {
-  id        Int      @id @default(autoincrement())
-  email     String   @unique
-  password  String
-  name      String
-  comments  Comment[] // Comments written by the user
-  ratings   Rating[] // Ratings given by the user
+  id       Int        @id @default(autoincrement())
+  email    String     @unique
+  password String
+  name     String
+  comments Comment[]
+  ratings  Rating[]
+  educator Educator[]
 }
 
-// Educator table to store information about educators
 model Educator {
-  id        Int      @id @default(autoincrement())
-  name      String
-  courses   Course[] // Courses taught by the educator
+  id          Int               @id @default(autoincrement())
+  name        String
+  description String
+  courses     Course[]
+
+  author   User @relation(fields: [authorId], references: [id])
+  authorId Int
 }
 
-// Course table to store course information
 model Course {
-  id          Int       @id @default(autoincrement())
+  id          Int             @id @default(autoincrement())
   title       String
   description String
   price       Float
-  educator    Educator  @relation(fields: [educatorId], references: [id])
-  educatorId  Int
-  comments    Comment[] // Comments for the course
-  ratings     Rating[] // Ratings for the course
+  comments    Comment[]
+  ratings     Rating[]
+  tags        TagsOnCourses[]
+
+  educator   Educator @relation(fields: [educatorId], references: [id])
+  educatorId Int
 }
 
-// Comment table to store comments about courses
+model Tag {
+  id   Int    @id @default(autoincrement())
+  name String
+
+  courses   TagsOnCourses[]
+}
+
+model TagsOnCourses {
+  course   Course @relation(fields: [courseId], references: [id])
+  courseId Int
+  tag      Tag    @relation(fields: [tagId], references: [id])
+  tagId    Int
+
+  @@id([courseId, tagId])
+}
+
 model Comment {
-  id        Int      @id @default(autoincrement())
-  text      String
-  course    Course   @relation(fields: [courseId], references: [id])
-  courseId  Int
-  user      User     @relation(fields: [userId], references: [id])
-  userId    Int
+  id   Int    @id @default(autoincrement())
+  text String
+
+  course   Course @relation(fields: [courseId], references: [id])
+  courseId Int
+  user     User   @relation(fields: [userId], references: [id])
+  userId   Int
 }
 
-// Rating table to store ratings for courses
 model Rating {
-  id        Int      @id @default(autoincrement())
-  value     Int      // Rating value from 0 to 5
-  course    Course   @relation(fields: [courseId], references: [id])
-  courseId  Int
-  user      User     @relation(fields: [userId], references: [id])
-  userId    Int
+  id    Int @id @default(autoincrement())
+  value Int
+
+  course   Course @relation(fields: [courseId], references: [id])
+  courseId Int
+  user     User   @relation(fields: [userId], references: [id])
+  userId   Int
 }

@@ -1,22 +1,23 @@
 import express, { NextFunction, Request, Response } from "express";
 import cors from "cors";
 import cookieParser from "cookie-parser";
+import { errors } from "celebrate";
 import "express-async-errors";
 import "dotenv/config";
 
 import { AppError } from "../errors/AppError";
 import { routes } from "../http/routes";
-import { errors } from "celebrate";
 
 const PORT = process.env.PORT || 3001;
 
 const app = express();
 
 app.use(express.json());
-app.use(cookieParser());
 app.use(cors());
-app.use(errors());
+app.use(cookieParser());
 app.use(routes);
+// o middleware do celebrate obrigatoriamente tem que vir depois do routes, senão dá erro e crasha a aplicação
+app.use(errors());
 
 app.use(
   (error: Error, request: Request, response: Response, next: NextFunction) => {

@@ -12,6 +12,8 @@ CREATE TABLE "User" (
 CREATE TABLE "Educator" (
     "id" SERIAL NOT NULL,
     "name" TEXT NOT NULL,
+    "description" TEXT NOT NULL,
+    "authorId" INTEGER NOT NULL,
 
     CONSTRAINT "Educator_pkey" PRIMARY KEY ("id")
 );
@@ -25,6 +27,22 @@ CREATE TABLE "Course" (
     "educatorId" INTEGER NOT NULL,
 
     CONSTRAINT "Course_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "Tag" (
+    "id" SERIAL NOT NULL,
+    "name" TEXT NOT NULL,
+
+    CONSTRAINT "Tag_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "TagsOnCourses" (
+    "courseId" INTEGER NOT NULL,
+    "tagId" INTEGER NOT NULL,
+
+    CONSTRAINT "TagsOnCourses_pkey" PRIMARY KEY ("courseId","tagId")
 );
 
 -- CreateTable
@@ -51,7 +69,16 @@ CREATE TABLE "Rating" (
 CREATE UNIQUE INDEX "User_email_key" ON "User"("email");
 
 -- AddForeignKey
+ALTER TABLE "Educator" ADD CONSTRAINT "Educator_authorId_fkey" FOREIGN KEY ("authorId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
 ALTER TABLE "Course" ADD CONSTRAINT "Course_educatorId_fkey" FOREIGN KEY ("educatorId") REFERENCES "Educator"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "TagsOnCourses" ADD CONSTRAINT "TagsOnCourses_courseId_fkey" FOREIGN KEY ("courseId") REFERENCES "Course"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "TagsOnCourses" ADD CONSTRAINT "TagsOnCourses_tagId_fkey" FOREIGN KEY ("tagId") REFERENCES "Tag"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Comment" ADD CONSTRAINT "Comment_courseId_fkey" FOREIGN KEY ("courseId") REFERENCES "Course"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

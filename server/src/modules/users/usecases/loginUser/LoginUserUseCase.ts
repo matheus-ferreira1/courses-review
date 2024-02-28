@@ -8,7 +8,6 @@ import { AppError } from "../../../../shared/errors/AppError";
 import { UserRepository } from "../../repository/UserRepository";
 
 import jwtConfig from "../../../../config/auth";
-import { generateTokenAndSetCookies } from "../../helpers/generateTokenAndSetCookies";
 
 type LoginUserDTO = {
   email: string;
