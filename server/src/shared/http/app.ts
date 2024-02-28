@@ -1,5 +1,6 @@
 import express, { NextFunction, Request, Response } from "express";
 import cors from "cors";
+import cookieParser from "cookie-parser";
 import "express-async-errors";
 import "dotenv/config";
 
@@ -12,6 +13,7 @@ const PORT = process.env.PORT || 3001;
 const app = express();
 
 app.use(express.json());
+app.use(cookieParser());
 app.use(cors());
 app.use(errors());
 app.use(routes);
