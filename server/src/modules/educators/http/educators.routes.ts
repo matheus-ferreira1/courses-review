@@ -1,6 +1,8 @@
 import { Request, Response, Router } from "express";
 import { Joi, Segments, celebrate } from "celebrate";
 
+import { isAuthenticated } from "../../../shared/http/middlewares/isAuthenticated";
+
 import { listEducatorsController } from "../useCases/listEducators";
 import { createEducatorController } from "../useCases/createEducator";
 
@@ -12,6 +14,7 @@ educatorRouter.get("/", (req, res) => {
 
 educatorRouter.post(
   "/",
+  isAuthenticated,
   celebrate({
     [Segments.BODY]: {
       name: Joi.string().required(),
