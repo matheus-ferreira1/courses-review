@@ -1,6 +1,6 @@
 -- CreateTable
 CREATE TABLE "User" (
-    "id" SERIAL NOT NULL,
+    "id" TEXT NOT NULL,
     "email" TEXT NOT NULL,
     "password" TEXT NOT NULL,
     "name" TEXT NOT NULL,
@@ -10,28 +10,28 @@ CREATE TABLE "User" (
 
 -- CreateTable
 CREATE TABLE "Educator" (
-    "id" SERIAL NOT NULL,
+    "id" TEXT NOT NULL,
     "name" TEXT NOT NULL,
     "description" TEXT NOT NULL,
-    "authorId" INTEGER NOT NULL,
+    "authorId" TEXT NOT NULL,
 
     CONSTRAINT "Educator_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
 CREATE TABLE "Course" (
-    "id" SERIAL NOT NULL,
+    "id" TEXT NOT NULL,
     "title" TEXT NOT NULL,
     "description" TEXT NOT NULL,
     "price" DOUBLE PRECISION NOT NULL,
-    "educatorId" INTEGER NOT NULL,
+    "educatorId" TEXT NOT NULL,
 
     CONSTRAINT "Course_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
 CREATE TABLE "Tag" (
-    "id" SERIAL NOT NULL,
+    "id" TEXT NOT NULL,
     "name" TEXT NOT NULL,
 
     CONSTRAINT "Tag_pkey" PRIMARY KEY ("id")
@@ -39,28 +39,28 @@ CREATE TABLE "Tag" (
 
 -- CreateTable
 CREATE TABLE "TagsOnCourses" (
-    "courseId" INTEGER NOT NULL,
-    "tagId" INTEGER NOT NULL,
+    "courseId" TEXT NOT NULL,
+    "tagId" TEXT NOT NULL,
 
     CONSTRAINT "TagsOnCourses_pkey" PRIMARY KEY ("courseId","tagId")
 );
 
 -- CreateTable
 CREATE TABLE "Comment" (
-    "id" SERIAL NOT NULL,
+    "id" TEXT NOT NULL,
     "text" TEXT NOT NULL,
-    "courseId" INTEGER NOT NULL,
-    "userId" INTEGER NOT NULL,
+    "courseId" TEXT NOT NULL,
+    "userId" TEXT NOT NULL,
 
     CONSTRAINT "Comment_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
 CREATE TABLE "Rating" (
-    "id" SERIAL NOT NULL,
+    "id" TEXT NOT NULL,
     "value" INTEGER NOT NULL,
-    "courseId" INTEGER NOT NULL,
-    "userId" INTEGER NOT NULL,
+    "courseId" TEXT NOT NULL,
+    "userId" TEXT NOT NULL,
 
     CONSTRAINT "Rating_pkey" PRIMARY KEY ("id")
 );

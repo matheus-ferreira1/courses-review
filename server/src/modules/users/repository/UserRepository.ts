@@ -46,20 +46,20 @@ export class UserRepository implements IUserRepository {
     return user;
   }
 
-  async findUserById(id: number): Promise<PrismaUser | null> {
+  async findUserById(id: string): Promise<PrismaUser | null> {
     const user = await prisma.user.findUnique({
       where: {
-        id: Number(id),
+        id,
       },
     });
 
     return user;
   }
 
-  async updateUser(id: number, data: PrismaUser): Promise<PrismaUser> {
+  async updateUser(data: PrismaUser): Promise<PrismaUser> {
     const user = await prisma.user.update({
       where: {
-        id: Number(id),
+        id: data.id,
       },
       data,
     });
@@ -67,10 +67,10 @@ export class UserRepository implements IUserRepository {
     return user;
   }
 
-  async deleteUser(id: number): Promise<PrismaUser> {
+  async deleteUser(id: string): Promise<PrismaUser> {
     const user = await prisma.user.delete({
       where: {
-        id: Number(id),
+        id,
       },
     });
 
