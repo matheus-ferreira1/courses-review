@@ -7,7 +7,7 @@ import { UserRepository } from "../../../users/repository/UserRepository";
 type createEducatorDTO = {
   name: string;
   description: string;
-  authorId: number;
+  authorId: string;
 };
 
 export class CreateEducatorUseCase {

@@ -23,7 +23,7 @@ export class EducatorRepository implements IEducatorRepository {
       data: {
         name,
         description,
-        authorId: Number(authorId),
+        authorId: authorId,
       },
     });
 

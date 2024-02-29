@@ -34,7 +34,7 @@ export class LoginUserUseCase {
     }
 
     const token = sign({}, jwtConfig.jwt.secret, {
-      subject: user.id.toString(),
+      subject: user.id,
       expiresIn: jwtConfig.jwt.expiresIn,
     });
 

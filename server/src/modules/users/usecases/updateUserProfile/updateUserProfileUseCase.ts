@@ -1,8 +1,8 @@
 import { User } from "@prisma/client";
+import { compare, hash } from "bcryptjs";
 
 import { UserRepository } from "../../repository/UserRepository";
-import { AppError } from "src/shared/errors/AppError";
-import { compare, hash } from "bcryptjs";
+import { AppError } from "../../../../shared/errors/AppError";
 
 type UpdateUserProfileDTO = {
   id: string;

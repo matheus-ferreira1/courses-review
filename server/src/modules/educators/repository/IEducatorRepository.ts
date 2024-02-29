@@ -3,7 +3,7 @@ import { Educator } from "@prisma/client";
 export type CreateEducatorDTO = {
   name: string;
   description: string;
-  authorId: number;
+  authorId: string;
 };
 
 export interface IEducatorRepository {

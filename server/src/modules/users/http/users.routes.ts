@@ -1,8 +1,11 @@
 import { Request, Response, Router } from "express";
 import { Joi, Segments, celebrate } from "celebrate";
 
+import { isAuthenticated } from "../../../shared/http/middlewares/isAuthenticated";
+
 import { registerUserController } from "../useCases/registerUser/index";
 import { loginUserController } from "../useCases/loginUser";
+import { updateUserProfileController } from "../useCases/updateUserProfile";
 
 const userRouter = Router();
 
@@ -30,6 +33,25 @@ userRouter.post(
   }),
   (req: Request, res: Response) => {
     return loginUserController.handle(req, res);
+  }
+);
+
+userRouter.put(
+  "/profile",
+  isAuthenticated,
+  celebrate({
+    [Segments.BODY]: {
+      name: Joi.string().required(),
+      email: Joi.string().email().required(),
+      old_password: Joi.string(),
+      password: Joi.string().optional(),
+      password_confirmation: Joi.string()
+        .valid(Joi.ref("password"))
+        .when("password", { is: Joi.exist(), then: Joi.required() }),
+    },
+  }),
+  (req: Request, res: Response) => {
+    return updateUserProfileController.handle(req, res);
   }
 );
 
