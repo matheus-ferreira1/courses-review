@@ -45,4 +45,14 @@ export class EducatorRepository implements IEducatorRepository {
 
     return educator;
   }
+
+  async findEducatorById(id: string): Promise<Educator | null> {
+    const educator = await prisma.educator.findUnique({
+      where: {
+        id,
+      },
+    });
+
+    return educator;
+  }
 }

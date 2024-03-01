@@ -40,26 +40,26 @@ model Course {
   price       Float
   comments    Comment[]
   ratings     Rating[]
-  tags        TagsOnCourses[]
-
+  tags        Tag[]
+  
   educator   Educator @relation(fields: [educatorId], references: [id])
   educatorId String
+  topic      Topic    @relation(fields: [topicId], references: [id])
+  topicId    String
+}
+
+model Topic {
+  id   String @id @default(uuid())
+  name String
+
+  courses Course[]
 }
 
 model Tag {
   id   String @id @default(uuid())
   name String
 
-  courses TagsOnCourses[]
-}
-
-model TagsOnCourses {
-  course   Course @relation(fields: [courseId], references: [id])
-  courseId String
-  tag      Tag    @relation(fields: [tagId], references: [id])
-  tagId    String
-
-  @@id([courseId, tagId])
+  courses Course[]
 }
 
 model Comment {
@@ -70,6 +70,8 @@ model Comment {
   courseId String
   user     User   @relation(fields: [userId], references: [id])
   userId   String
+
+  createdAt DateTime @default(now())
 }
 
 model Rating {
