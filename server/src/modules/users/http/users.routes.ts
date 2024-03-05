@@ -37,13 +37,13 @@ userRouter.post(
 );
 
 userRouter.put(
-  "/profile",
+  "/profile/:id",
   isAuthenticated,
   celebrate({
     [Segments.BODY]: {
       name: Joi.string().required(),
       email: Joi.string().email().required(),
-      old_password: Joi.string(),
+      old_password: Joi.string().optional(),
       password: Joi.string().optional(),
       password_confirmation: Joi.string()
         .valid(Joi.ref("password"))

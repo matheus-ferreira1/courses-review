@@ -1,8 +1,10 @@
 import { Course } from "@prisma/client";
 
 import { AppError } from "../../../../shared/errors/AppError";
+
 import { CourseRepository } from "../../repository/CourseRepository";
-import { EducatorRepository } from "src/modules/educators/repository/EducatorRepository";
+import { EducatorRepository } from "../../../educators/repository/EducatorRepository";
+import { TopicRepository } from "../../../topics/repository/TopicRepository";
 
 type CreateCourseDTO = {
   title: string;
@@ -16,7 +18,8 @@ type CreateCourseDTO = {
 export class CreateCourseUseCase {
   constructor(
     private courseRepository: CourseRepository,
-    private educatorRepository: EducatorRepository
+    private educatorRepository: EducatorRepository,
+    private topicRepository: TopicRepository
   ) {}
 
   async execute({
@@ -32,7 +35,10 @@ export class CreateCourseUseCase {
       throw new AppError("Educator not found", 404);
     }
 
-    //check if the topic exists
+    const topic = await this.topicRepository.findTopicById(topicId);
+    if (!topic) {
+      throw new AppError("Topic not found", 404);
+    }
 
     const courseAlreadyExists = await this.courseRepository.findCourseByTitle(
       title
