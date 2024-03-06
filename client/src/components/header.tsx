@@ -1,12 +1,12 @@
 import { NavLink } from "react-router-dom";
 
 import { ThemeToggle } from "./theme-toggle";
-import LogoMain from "./logo-main";
 import { useAuthStore } from "@/stores/auth-store";
+import LogoMain from "./logo-main";
 import UserNav from "./user-nav";
 
 export default function Header() {
-  const isLogged = useAuthStore((state) => state.isLogged);
+  const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
   const user = useAuthStore((state) => state.user);
 
   return (
@@ -18,25 +18,22 @@ export default function Header() {
             <li>
               <ThemeToggle />
             </li>
-            {isLogged ? (
+            {isLoggedIn() ? (
               <>
                 <li>
                   <NavLink to="/register">Nova review</NavLink>
                 </li>
                 <li>
-                  <UserNav
-                    name={user?.responseUser.name}
-                    email={user?.responseUser.email}
-                  />
+                  <UserNav name={user?.name} email={user?.email} />
                 </li>
               </>
             ) : (
               <>
                 <li>
-                  <NavLink to="/register">Register</NavLink>
+                  <NavLink to="/register">Cadastre-se</NavLink>
                 </li>
                 <li>
-                  <NavLink to="/login">Login</NavLink>
+                  <NavLink to="/login">Entre</NavLink>
                 </li>
               </>
             )}

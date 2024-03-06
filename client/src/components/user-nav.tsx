@@ -16,6 +16,7 @@ import {
   DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
 import { useToast } from "./ui/use-toast";
+import { useAuthStore } from "@/stores/auth-store";
 
 interface UserNavProps {
   name: string | undefined;
@@ -27,14 +28,17 @@ export default function UserNav({ name, email }: UserNavProps) {
   const { toast } = useToast();
   const navigate = useNavigate();
 
+  const logout = useAuthStore((state) => state.logout);
+
   const { mutate } = useMutation({
     mutationFn: signOutUser,
     onSuccess: async () => {
-      await queryClient.invalidateQueries({ queryKey: ["user"] });
+      await queryClient.invalidateQueries({ queryKey: ["validate-token"] });
       toast({
         title: "Sucesso!",
         description: "Você foi deslogado!",
       });
+      logout();
       navigate("/");
     },
     onError: (error) => {

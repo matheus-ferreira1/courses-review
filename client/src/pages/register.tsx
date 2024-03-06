@@ -32,7 +32,7 @@ export default function Register() {
     onSuccess: async () => {
       await queryClient.invalidateQueries({ queryKey: ["user"] });
       toast({
-        title: "Sucesso!",
+        title: "Registrado com sucesso!",
         description: "Faça login para continuar",
       });
       navigate("/login");

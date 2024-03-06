@@ -41,6 +41,14 @@ userRouter.post("/logout", (req: Request, res: Response) => {
   res.send();
 });
 
+userRouter.get(
+  "/validate-token",
+  isAuthenticated,
+  (req: Request, res: Response) => {
+    return res.send({ message: "Token is valid" });
+  }
+);
+
 userRouter.put(
   "/profile/:id",
   isAuthenticated,

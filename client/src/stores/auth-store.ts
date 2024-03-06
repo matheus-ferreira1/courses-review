@@ -1,20 +1,35 @@
 import { create } from "zustand";
 
-interface User {
-  responseUser: { id: string; name: string; email: string };
-  token: string;
+export interface User {
+  id: string;
+  name: string;
+  email: string;
 }
 
 interface IAuthStore {
+  isLoggedIn: () => boolean;
   user: User | null;
-  isLogged: boolean;
-  setUser: (user: User) => void;
-  clearUser: () => void;
+  setUser: (user: User | null) => void;
+  token: string | null;
+  setToken: (token: string | null) => void;
+  logout: () => void;
 }
 
 export const useAuthStore = create<IAuthStore>((set) => ({
-  user: null,
-  isLogged: false,
-  setUser: (user) => set({ user, isLogged: true }),
-  clearUser: () => set({ user: null, isLogged: false }),
+  isLoggedIn: () => Boolean(localStorage.getItem("access-token")),
+  user: JSON.parse(localStorage.getItem("app-user") || "null"),
+  setUser: (user) => {
+    localStorage.setItem("app-user", JSON.stringify(user));
+    set({ user });
+  },
+  token: localStorage.getItem("access-token"),
+  setToken: (token) => {
+    localStorage.setItem("access-token", token || "");
+    set({ token });
+  },
+  logout: () => {
+    localStorage.removeItem("access-token");
+    localStorage.removeItem("app-user");
+    set({ user: null, token: null });
+  },
 }));

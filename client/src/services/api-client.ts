@@ -51,3 +51,15 @@ export const signOutUser = async () => {
     throw new Error("Erro ao fazer logout");
   }
 };
+
+export const validateToken = async () => {
+  const response = await fetch(`${API_BASE_URL}/users/validate-token`, {
+    credentials: "include",
+  });
+
+  if (!response.ok) {
+    throw new Error("Token inválido");
+  }
+
+  return response.json();
+};

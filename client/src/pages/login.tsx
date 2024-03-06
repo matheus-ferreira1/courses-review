@@ -21,7 +21,7 @@ export default function Login() {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
   const { toast } = useToast();
-  const { setUser, user, isLogged } = useAuthStore((state) => state);
+  const { setUser, setToken } = useAuthStore((state) => state);
   const {
     register,
     handleSubmit,
@@ -31,11 +31,12 @@ export default function Login() {
   const { mutate, isPending } = useMutation({
     mutationFn: signInUser,
     onSuccess: async (data) => {
-      await queryClient.invalidateQueries({ queryKey: ["user"] });
-      setUser(data);
+      await queryClient.invalidateQueries({ queryKey: ["validate-token"] });
+      setUser(data.responseUser);
+      setToken(data.token);
       toast({
-        title: "Sucesso!",
-        description: "Login efetuado com sucesso!",
+        title: "Login feito com sucesso!",
+        description: "Publique já sua primeira review!",
       });
       navigate("/");
     },
