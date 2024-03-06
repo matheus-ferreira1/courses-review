@@ -36,6 +36,11 @@ userRouter.post(
   }
 );
 
+userRouter.post("/logout", (req: Request, res: Response) => {
+  res.cookie("auth-token", "", { expires: new Date(0) });
+  res.send();
+});
+
 userRouter.put(
   "/profile/:id",
   isAuthenticated,
