@@ -4,7 +4,7 @@ import { NavLink, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { Loader2 } from "lucide-react";
 
-import { signInUser } from "@/services/api-client";
+import { useSignInUser } from "@/services/useSignInUser";
 
 import LogoMain from "@/components/logo-main";
 import { Input } from "@/components/ui/input";
@@ -37,7 +37,7 @@ export default function Login() {
   } = useForm<LoginFormTypes>();
 
   const { mutate, isPending } = useMutation({
-    mutationFn: signInUser,
+    mutationFn: useSignInUser,
     onSuccess: async (data) => {
       await queryClient.invalidateQueries({ queryKey: ["validate-token"] });
       setUser(data.responseUser);

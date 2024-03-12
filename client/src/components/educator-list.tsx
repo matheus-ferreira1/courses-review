@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 
-import { getEducators } from "@/services/api-client";
+import { useGetEducators } from "@/services/useGetEducators";
 
 import { Card, CardContent } from "@/components/ui/card";
 import {
@@ -20,7 +20,7 @@ const EducatorList = () => {
     error,
   } = useQuery({
     queryKey: ["educators"],
-    queryFn: getEducators,
+    queryFn: useGetEducators,
   });
 
   if (isPending) {

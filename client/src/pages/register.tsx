@@ -4,7 +4,7 @@ import { useForm } from "react-hook-form";
 import { NavLink, useNavigate } from "react-router-dom";
 import { Loader2 } from "lucide-react";
 
-import { registerUser } from "@/services/api-client";
+import { useRegisterUser } from "@/services/useRegisterUser";
 
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
@@ -38,7 +38,7 @@ export default function Register() {
   } = useForm<RegisterFormTypes>();
 
   const { mutate, isPending } = useMutation({
-    mutationFn: registerUser,
+    mutationFn: useRegisterUser,
     onSuccess: async () => {
       await queryClient.invalidateQueries({ queryKey: ["user"] });
       toast({

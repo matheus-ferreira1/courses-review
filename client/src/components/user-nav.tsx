@@ -2,7 +2,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
 import { LogOut, User } from "lucide-react";
 
-import { signOutUser } from "@/services/api-client";
+import { useSignOutUser } from "@/services/useSignOutUser";
 
 import { Avatar, AvatarFallback } from "./ui/avatar";
 import { Button } from "./ui/button";
@@ -31,7 +31,7 @@ export default function UserNav({ name, email }: UserNavProps) {
   const logout = useAuthStore((state) => state.logout);
 
   const { mutate } = useMutation({
-    mutationFn: signOutUser,
+    mutationFn: useSignOutUser,
     onSuccess: async () => {
       await queryClient.invalidateQueries({ queryKey: ["validate-token"] });
       toast({
