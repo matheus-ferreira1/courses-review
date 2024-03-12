@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { NavLink, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
@@ -21,7 +22,14 @@ export default function Login() {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
   const { toast } = useToast();
-  const { setUser, setToken } = useAuthStore((state) => state);
+  const { setUser, setToken, isLoggedIn } = useAuthStore((state) => state);
+
+  useEffect(() => {
+    if (isLoggedIn()) {
+      navigate("/");
+    }
+  }, [isLoggedIn]);
+
   const {
     register,
     handleSubmit,

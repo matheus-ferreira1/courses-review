@@ -1,7 +1,7 @@
 import { Toaster } from "@/components/ui/toaster";
 import QueryProvider from "./query-provider";
 import { ThemeProvider } from "./theme-provider";
-import { AppContextProvider } from "@/contexts/app-context";
+import { BrowserRouter } from "react-router-dom";
 
 interface ProviderProps {
   children: React.ReactNode;
@@ -11,10 +11,10 @@ export default function Provider({ children }: ProviderProps) {
   return (
     <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
       <QueryProvider>
-        <AppContextProvider>
+        <BrowserRouter>
           {children}
           <Toaster />
-        </AppContextProvider>
+        </BrowserRouter>
       </QueryProvider>
     </ThemeProvider>
   );

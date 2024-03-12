@@ -28,6 +28,7 @@ model Educator {
   name        String
   description String
   courses     Course[]
+  imgUrl      String
 
   author   User   @relation(fields: [authorId], references: [id])
   authorId String

@@ -1,7 +1,8 @@
+import { useEffect } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { Loader2 } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { NavLink, useNavigate } from "react-router-dom";
+import { Loader2 } from "lucide-react";
 
 import { registerUser } from "@/services/api-client";
 
@@ -10,6 +11,7 @@ import { Label } from "@/components/ui/label";
 import { useToast } from "@/components/ui/use-toast";
 import LogoMain from "@/components/logo-main";
 import { Input } from "@/components/ui/input";
+import { useAuthStore } from "@/stores/auth-store";
 
 export type RegisterFormTypes = {
   name: string;
@@ -21,6 +23,14 @@ export default function Register() {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
   const { toast } = useToast();
+  const { isLoggedIn } = useAuthStore((state) => state);
+
+  useEffect(() => {
+    if (isLoggedIn()) {
+      navigate("/");
+    }
+  }, [isLoggedIn]);
+
   const {
     register,
     handleSubmit,

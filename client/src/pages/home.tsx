@@ -1,3 +1,4 @@
+import EducatorList from "@/components/educator-list";
 import Header from "@/components/header";
 
 export default function Home() {
@@ -5,8 +6,8 @@ export default function Home() {
     <div>
       <Header />
 
-      <main>
-        <h1>Home</h1>
+      <main className="flex flex-col items-center py-4">
+        <EducatorList />
       </main>
 
       <footer>footer</footer>

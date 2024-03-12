@@ -63,3 +63,13 @@ export const validateToken = async () => {
 
   return response.json();
 };
+
+export const getEducators = async () => {
+  const response = await fetch(`${API_BASE_URL}/educators`);
+
+  if (!response.ok) {
+    throw new Error("Erro ao buscar educadores");
+  }
+
+  return response.json();
+};
