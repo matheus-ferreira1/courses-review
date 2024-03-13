@@ -14,4 +14,5 @@ export interface ICourseRepository {
   listCourses(): Promise<Course[]>;
   findCourseByTopic(topicId: string): Promise<Course[] | null>;
   findCourseById(id: string): Promise<Course | null>;
+  findCourseByEducator(educatorId: string): Promise<Course[] | null>;
 }

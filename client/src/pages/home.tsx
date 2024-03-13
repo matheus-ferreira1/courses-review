@@ -1,16 +1,14 @@
-import EducatorList from "@/components/educator-list";
-import Header from "@/components/header";
+import FeaturedEducators from "@/components/featured-educators";
+import FeaturedTopics from "@/components/featured-topics";
+import Layout from "@/components/layout";
 
 export default function Home() {
   return (
-    <div>
-      <Header />
-
-      <main className="flex flex-col items-center py-4">
-        <EducatorList />
+    <Layout>
+      <main className="flex flex-col items-center">
+        <FeaturedEducators />
+        <FeaturedTopics />
       </main>
-
-      <footer>footer</footer>
-    </div>
+    </Layout>
   );
 }

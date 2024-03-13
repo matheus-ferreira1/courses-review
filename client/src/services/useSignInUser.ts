@@ -2,7 +2,7 @@ import { LoginFormTypes } from "@/pages/login";
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "";
 
-export const signInUser = async (formData: LoginFormTypes) => {
+export const useSignInUser = async (formData: LoginFormTypes) => {
   const response = await fetch(`${API_BASE_URL}/users/login`, {
     method: "POST",
     credentials: "include",

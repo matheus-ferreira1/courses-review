@@ -3,6 +3,8 @@ import { Route, Routes } from "react-router-dom";
 import Home from "./pages/home";
 import Register from "./pages/register";
 import Login from "./pages/login";
+import Educators from "./pages/educators";
+import EducatorDetail from "./pages/educator-detail";
 
 export default function App() {
   return (
@@ -11,6 +13,8 @@ export default function App() {
         <Route path="/" element={<Home />} />
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/educators" element={<Educators />} />
+        <Route path="/educators/:educatorId" element={<EducatorDetail />} />
       </Routes>
     </>
   );

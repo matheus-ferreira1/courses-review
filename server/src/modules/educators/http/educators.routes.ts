@@ -5,12 +5,25 @@ import { isAuthenticated } from "../../../shared/http/middlewares/isAuthenticate
 
 import { listEducatorsController } from "../useCases/listEducators";
 import { createEducatorController } from "../useCases/createEducator";
+import { findEducatorByIdController } from "../useCases/findEducatorById";
 
 const educatorRouter = Router();
 
 educatorRouter.get("/", (req, res) => {
   return listEducatorsController.handle(req, res);
 });
+
+educatorRouter.get(
+  "/:educatorId",
+  celebrate({
+    [Segments.PARAMS]: {
+      educatorId: Joi.string().uuid().required(),
+    },
+  }),
+  (req, res) => {
+    return findEducatorByIdController.handle(req, res);
+  }
+);
 
 educatorRouter.post(
   "/",

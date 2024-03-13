@@ -1,6 +1,6 @@
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "";
 
-export const signOutUser = async () => {
+export const useSignOutUser = async () => {
   const response = await fetch(`${API_BASE_URL}/users/logout`, {
     method: "POST",
     credentials: "include",
