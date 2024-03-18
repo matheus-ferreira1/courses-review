@@ -8,6 +8,7 @@ type createEducatorDTO = {
   name: string;
   description: string;
   authorId: string;
+  imgUrl?: string;
 };
 
 export class CreateEducatorUseCase {
@@ -20,6 +21,7 @@ export class CreateEducatorUseCase {
     authorId,
     description,
     name,
+    imgUrl,
   }: createEducatorDTO): Promise<Educator> {
     const user = await this.userRepository.findUserById(authorId);
     if (!user) {
@@ -37,6 +39,7 @@ export class CreateEducatorUseCase {
       authorId,
       description,
       name,
+      imgUrl,
     });
 
     return educator;

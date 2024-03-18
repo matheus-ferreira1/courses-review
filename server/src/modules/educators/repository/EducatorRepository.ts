@@ -18,12 +18,14 @@ export class EducatorRepository implements IEducatorRepository {
     description,
     name,
     authorId,
+    imgUrl,
   }: CreateEducatorDTO): Promise<Educator> {
     const educator = await prisma.educator.create({
       data: {
         name,
         description,
-        authorId: authorId,
+        authorId,
+        imgUrl,
       },
     });
 

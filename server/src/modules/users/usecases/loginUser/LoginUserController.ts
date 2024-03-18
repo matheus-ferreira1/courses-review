@@ -13,13 +13,6 @@ export class LoginUserController {
       password,
     });
 
-    if (user) {
-      response.cookie("auth_token", token, {
-        httpOnly: true,
-        maxAge: 60 * 60 * 24 * 30 * 1000,
-      });
-    }
-
     const responseUser = {
       id: user.id,
       name: user.name,

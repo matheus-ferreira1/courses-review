@@ -4,6 +4,7 @@ export type CreateEducatorDTO = {
   name: string;
   description: string;
   authorId: string;
+  imgUrl?: string;
 };
 
 export interface IEducatorRepository {

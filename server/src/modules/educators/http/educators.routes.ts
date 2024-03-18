@@ -33,6 +33,7 @@ educatorRouter.post(
       name: Joi.string().required(),
       description: Joi.string().required(),
       authorId: Joi.string().required(),
+      imgUrl: Joi.string().required(),
     },
   }),
   (req: Request, res: Response) => {

@@ -1,6 +1,8 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
 import { LogOut, User } from "lucide-react";
+import { useCookies } from "react-cookie";
+import { useAuthStore } from "@/stores/auth-store";
 
 import { useSignOutUser } from "@/services/useSignOutUser";
 
@@ -16,7 +18,6 @@ import {
   DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
 import { useToast } from "./ui/use-toast";
-import { useAuthStore } from "@/stores/auth-store";
 
 interface UserNavProps {
   name: string | undefined;
@@ -27,6 +28,7 @@ export default function UserNav({ name, email }: UserNavProps) {
   const queryClient = useQueryClient();
   const { toast } = useToast();
   const navigate = useNavigate();
+  const [cookies, setCookie, removeCookie] = useCookies(["auth-token"]);
 
   const logout = useAuthStore((state) => state.logout);
 
@@ -39,6 +41,7 @@ export default function UserNav({ name, email }: UserNavProps) {
         description: "Você foi deslogado!",
       });
       logout();
+      removeCookie("auth-token");
       navigate("/");
     },
     onError: (error) => {

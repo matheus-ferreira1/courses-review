@@ -3,15 +3,16 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { NavLink, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { Loader2 } from "lucide-react";
+import { useCookies } from "react-cookie";
 
 import { useSignInUser } from "@/services/useSignInUser";
+import { useAuthStore } from "@/stores/auth-store";
 
 import LogoMain from "@/components/logo-main";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useToast } from "@/components/ui/use-toast";
 import { Button } from "@/components/ui/button";
-import { useAuthStore } from "@/stores/auth-store";
 
 export type LoginFormTypes = {
   email: string;
@@ -21,6 +22,7 @@ export type LoginFormTypes = {
 export default function Login() {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
+  const [cookies, setCookie] = useCookies(["auth-token"]);
   const { toast } = useToast();
   const { setUser, setToken, isLoggedIn } = useAuthStore((state) => state);
 
@@ -46,6 +48,7 @@ export default function Login() {
         title: "Login feito com sucesso!",
         description: "Publique já sua primeira review!",
       });
+      setCookie("auth-token", data.token);
       navigate("/");
     },
     onError: (error) => {
