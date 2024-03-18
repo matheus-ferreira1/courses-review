@@ -8,7 +8,7 @@ type createEducatorDTO = {
   name: string;
   description: string;
   authorId: string;
-  imgUrl?: string;
+  imgUrl: string;
 };
 
 export class CreateEducatorUseCase {

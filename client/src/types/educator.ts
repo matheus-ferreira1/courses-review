@@ -2,5 +2,5 @@ export type Educator = {
   id: string;
   name: string;
   description: string;
-  imgUrl?: string;
+  imgUrl: string;
 };

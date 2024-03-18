@@ -32,7 +32,6 @@ educatorRouter.post(
     [Segments.BODY]: {
       name: Joi.string().required(),
       description: Joi.string().required(),
-      authorId: Joi.string().required(),
       imgUrl: Joi.string().required(),
     },
   }),

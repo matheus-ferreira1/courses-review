@@ -5,9 +5,9 @@ import { Link } from "react-router-dom";
 import { useGetEducators } from "@/services/useGetEducators";
 
 import Layout from "@/components/layout";
-import { Card, CardContent } from "@/components/ui/card";
 import { buttonVariants } from "@/components/ui/button";
 import Skeleton from "@/components/skeleton";
+import EducatorCard from "@/components/educator-card";
 
 export default function Educators() {
   const {
@@ -44,21 +44,7 @@ export default function Educators() {
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
             {educators.map((educator) => (
-              <Link to={`/educators/${educator.id}`} key={educator.id}>
-                <Card className="transition-all hover:border-primary hover:border hover:shadow-lg">
-                  <CardContent className="flex flex-col aspect-square items-center justify-center p-4 space-y-4">
-                    <img
-                      src={educator.imgUrl}
-                      alt=""
-                      className="rounded-full size-24"
-                    />
-                    <h2 className="font-bold">{educator.name}</h2>
-                    <p className="line-clamp-3 font-thin text-muted-foreground text-sm h-auto">
-                      {educator.description}
-                    </p>
-                  </CardContent>
-                </Card>
-              </Link>
+              <EducatorCard key={educator.id} educator={educator} />
             ))}
           </div>
         )}
