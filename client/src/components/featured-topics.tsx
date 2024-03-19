@@ -3,10 +3,10 @@ import { useQuery } from "@tanstack/react-query";
 
 import { useGetTopics } from "@/services/useGetTopics";
 
-import { Card, CardContent } from "@/components/ui/card";
 import { ScrollArea, ScrollBar } from "./ui/scroll-area";
 import { buttonVariants } from "./ui/button";
 import Skeleton from "./skeleton";
+import TopicCard from "./topic-card";
 
 const FeaturedTopics = () => {
   const {
@@ -41,35 +41,11 @@ const FeaturedTopics = () => {
       {isPending ? (
         <Skeleton />
       ) : (
-        <ScrollArea className="w-full">
-          <div className="flex gap-4 pb-4">
-            {topics
-              .slice(0, 5)
-              .map(
-                (educator: {
-                  id: string;
-                  name: string;
-                  description: string;
-                }) => (
-                  <Link
-                    to={`/topics/${educator.id}`}
-                    key={educator.id}
-                    className="size-72"
-                  >
-                    <Card className="transition-all hover:border-primary hover:border hover:shadow-lg">
-                      <CardContent className="flex flex-col aspect-square items-center justify-center p-4 space-y-4">
-                        <h2 className="font-bold">{educator.name}</h2>
-                        <p className="line-clamp-3 font-thin text-muted-foreground text-sm h-auto">
-                          {educator.description}
-                        </p>
-                      </CardContent>
-                    </Card>
-                  </Link>
-                )
-              )}
-          </div>
-          <ScrollBar orientation="horizontal" />
-        </ScrollArea>
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 lg:grid-cols-7 gap-4">
+          {topics.slice(0, 7).map((topic) => (
+            <TopicCard key={topic.id} topic={topic} />
+          ))}
+        </div>
       )}
     </div>
   );

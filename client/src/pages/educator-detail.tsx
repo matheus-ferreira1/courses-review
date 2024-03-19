@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 
 import Layout from "@/components/layout";
 import { useGetEducatorById } from "@/services/useGetEducatorById";
@@ -10,6 +10,7 @@ import { PlusCircle } from "lucide-react";
 
 export default function EducatorDetail() {
   const { educatorId } = useParams();
+  const navigate = useNavigate();
 
   const {
     isPending,
@@ -34,19 +35,23 @@ export default function EducatorDetail() {
   return (
     <Layout>
       <div className="space-y-4 my-10 container">
+        <button
+          onClick={() => navigate(-1)}
+          className={buttonVariants({ variant: "outline" })}
+        >
+          Voltar
+        </button>
+        <img
+          src={educator.imgUrl}
+          alt={`Imagem de perfil de ${educator.name}`}
+          className="rounded-full size-40 object-cover"
+        />
         <h1 className="text-2xl font-extrabold tracking-tight lg:text-4xl">
           {educator?.name}
         </h1>
 
-        <p>{educator?.description}</p>
-        <a
-          className={buttonVariants({ variant: "outline" })}
-          href="#"
-          //   target="_blank"
-          rel="noopener noreferrer"
-        >
-          Página do educador
-        </a>
+        <p className="text-justify">{educator?.description}</p>
+
         <Separator className="my-4" />
 
         <div className="flex items-center justify-between">

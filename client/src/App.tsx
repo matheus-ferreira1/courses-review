@@ -6,6 +6,7 @@ import Login from "./pages/login";
 import Educators from "./pages/educators";
 import EducatorDetail from "./pages/educator-detail";
 import NewEducator from "./pages/new-educator";
+import Topics from "./pages/topics";
 
 export default function App() {
   return (
@@ -17,6 +18,7 @@ export default function App() {
         <Route path="/educators" element={<Educators />} />
         <Route path="/educators/:educatorId" element={<EducatorDetail />} />
         <Route path="/new-educator" element={<NewEducator />} />
+        <Route path="/topics" element={<Topics />} />
       </Routes>
     </>
   );

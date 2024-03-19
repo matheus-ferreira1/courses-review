@@ -2,26 +2,26 @@ import { useQuery } from "@tanstack/react-query";
 import { PlusCircle } from "lucide-react";
 import { Link } from "react-router-dom";
 
-import { useGetEducators } from "@/services/useGetEducators";
+import { useGetTopics } from "@/services/useGetTopics";
 
 import Layout from "@/components/layout";
 import { buttonVariants } from "@/components/ui/button";
 import Skeleton from "@/components/skeleton";
-import EducatorCard from "@/components/educator-card";
+import TopicCard from "@/components/topic-card";
 
-export default function Educators() {
+export default function Topics() {
   const {
     isPending,
     isError,
-    data: educators,
+    data: topics,
     error,
   } = useQuery({
-    queryKey: ["educators"],
-    queryFn: useGetEducators,
+    queryKey: ["topics"],
+    queryFn: useGetTopics,
   });
 
   if (isError) {
-    return <div>Erro ao carregar educadores: {error.message}</div>;
+    return <div>Erro ao carregar Tópicos: {error.message}</div>;
   }
 
   return (
@@ -29,11 +29,11 @@ export default function Educators() {
       <div className="space-y-4 my-10 container">
         <div className="flex items-center justify-between">
           <h1 className="text-2xl font-extrabold tracking-tight lg:text-4xl">
-            Exibindo todos os educadores
+            Exibidos todos os tópicos
           </h1>
           <Link
             className={buttonVariants({ variant: "outline" })}
-            to="/new-educator"
+            to="/new-topic"
           >
             <PlusCircle size={20} strokeWidth={1.5} className="mr-2" />
             Novo
@@ -42,9 +42,9 @@ export default function Educators() {
         {isPending ? (
           <Skeleton />
         ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-            {educators.map((educator) => (
-              <EducatorCard key={educator.id} educator={educator} />
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 lg:grid-cols-7 gap-4">
+            {topics.map((topic) => (
+              <TopicCard key={topic.id} topic={topic} />
             ))}
           </div>
         )}
