@@ -64,6 +64,7 @@ export class CourseRepository implements ICourseRepository {
       },
       include: {
         tags: true,
+        educator: true,
       },
     });
 

@@ -9,6 +9,7 @@ import NewEducator from "./pages/new-educator";
 import Topics from "./pages/topics";
 import NewTopic from "./pages/new-topic";
 import TopicDetail from "./pages/topic-detail";
+import CourseDetail from "./pages/course-detail";
 
 export default function App() {
   return (
@@ -23,6 +24,7 @@ export default function App() {
         <Route path="/topics" element={<Topics />} />
         <Route path="/topics/:topicId" element={<TopicDetail />} />
         <Route path="/new-topic" element={<NewTopic />} />
+        <Route path="courses/:courseId" element={<CourseDetail />} />
       </Routes>
     </>
   );

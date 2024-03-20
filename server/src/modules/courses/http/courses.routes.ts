@@ -5,6 +5,7 @@ import { listCoursesController } from "../useCases/listCourses";
 import { createCourseController } from "../useCases/createCourse";
 import { findCourseByEducatorController } from "../useCases/findCourseByEducator";
 import { findCourseByTopicController } from "../useCases/findCourseByTopic";
+import { findCourseByIdController } from "../useCases/findCourseById";
 
 const courseRouter = Router();
 
@@ -25,6 +26,18 @@ courseRouter.get(
   }),
   (req, res) => {
     return findCourseByEducatorController.handle(req, res);
+  }
+);
+
+courseRouter.get(
+  "/by-id/:courseId",
+  celebrate({
+    [Segments.PARAMS]: Joi.object().keys({
+      courseId: Joi.string().uuid().required(),
+    }),
+  }),
+  (req, res) => {
+    return findCourseByIdController.handle(req, res);
   }
 );
 
