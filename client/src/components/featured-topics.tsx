@@ -3,7 +3,6 @@ import { useQuery } from "@tanstack/react-query";
 
 import { useGetTopics } from "@/services/useGetTopics";
 
-import { ScrollArea, ScrollBar } from "./ui/scroll-area";
 import { buttonVariants } from "./ui/button";
 import Skeleton from "./skeleton";
 import TopicCard from "./topic-card";
