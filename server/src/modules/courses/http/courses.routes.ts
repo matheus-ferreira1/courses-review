@@ -1,8 +1,10 @@
 import { Router } from "express";
+import { Joi, Segments, celebrate } from "celebrate";
+
 import { listCoursesController } from "../useCases/listCourses";
 import { createCourseController } from "../useCases/createCourse";
 import { findCourseByEducatorController } from "../useCases/findCourseByEducator";
-import { Joi, Segments, celebrate } from "celebrate";
+import { findCourseByTopicController } from "../useCases/findCourseByTopic";
 
 const courseRouter = Router();
 
@@ -23,6 +25,18 @@ courseRouter.get(
   }),
   (req, res) => {
     return findCourseByEducatorController.handle(req, res);
+  }
+);
+
+courseRouter.get(
+  "/by-topic/:topicId",
+  celebrate({
+    [Segments.PARAMS]: Joi.object().keys({
+      topicId: Joi.string().uuid().required(),
+    }),
+  }),
+  (req, res) => {
+    return findCourseByTopicController.handle(req, res);
   }
 );
 

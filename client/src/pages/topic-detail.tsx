@@ -1,25 +1,26 @@
-import { useQuery } from "@tanstack/react-query";
 import { Link, useNavigate, useParams } from "react-router-dom";
+import { useQuery } from "@tanstack/react-query";
 import { PlusCircle } from "lucide-react";
 
+import { useGetTopicById } from "@/services/useGetTopicById";
+
 import Layout from "@/components/layout";
-import { useGetEducatorById } from "@/services/useGetEducatorById";
 import { buttonVariants } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
-import CoursesListByEducator from "@/components/courses-list-educator";
+import CoursesListByTopic from "@/components/course-list-topic";
 
-export default function EducatorDetail() {
-  const { educatorId } = useParams();
+export default function TopicDetail() {
+  const { topicId } = useParams();
   const navigate = useNavigate();
 
   const {
     isPending,
     isError,
-    data: educator,
+    data: topic,
     error,
   } = useQuery({
-    queryKey: ["educator"],
-    queryFn: () => useGetEducatorById(educatorId!!),
+    queryKey: ["topic"],
+    queryFn: () => useGetTopicById(topicId!!),
   });
 
   if (isError) {
@@ -41,16 +42,13 @@ export default function EducatorDetail() {
         >
           Voltar
         </button>
-        <img
-          src={educator.imgUrl}
-          alt={`Imagem de perfil de ${educator.name}`}
-          className="rounded-full size-40 object-cover"
-        />
-        <h1 className="text-2xl font-extrabold tracking-tight lg:text-4xl">
-          {educator?.name}
-        </h1>
 
-        <p className="text-justify">{educator?.description}</p>
+        <h1 className="text-2xl font-extrabold tracking-tight lg:text-4xl">
+          Exibindo cursos do tópico:{" "}
+          <span className="underline uppercase tracking-wide">
+            {topic?.name}
+          </span>
+        </h1>
 
         <Separator className="my-4" />
 
@@ -64,7 +62,7 @@ export default function EducatorDetail() {
             Novo
           </Link>
         </div>
-        <CoursesListByEducator educatorId={educatorId} />
+        <CoursesListByTopic topicId={topicId} />
       </div>
     </Layout>
   );

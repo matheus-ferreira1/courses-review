@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
+import { Loader2 } from "lucide-react";
 
 import { useGetTopics } from "@/services/useGetTopics";
 
@@ -18,10 +19,6 @@ const FeaturedTopics = () => {
     queryFn: useGetTopics,
   });
 
-  if (isPending) {
-    return <div>Carregando tópicos...</div>;
-  }
-
   if (isError) {
     return <div>Erro ao carregar tópicos: {error.message}</div>;
   }
@@ -38,7 +35,9 @@ const FeaturedTopics = () => {
       </div>
 
       {isPending ? (
-        <Skeleton />
+        <div className="w-full">
+          <Loader2 className="animate mx-auto" />
+        </div>
       ) : (
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 lg:grid-cols-7 gap-4">
           {topics.slice(0, 7).map((topic) => (

@@ -45,11 +45,12 @@ export class CourseRepository implements ICourseRepository {
   }
 
   async findCourseByTopic(topicId: string): Promise<Course[] | null> {
-    //falta criar na entidade topic um find by id
-
     const courses = await prisma.course.findMany({
       where: {
         topicId,
+      },
+      include: {
+        tags: true,
       },
     });
 
@@ -61,6 +62,9 @@ export class CourseRepository implements ICourseRepository {
       where: {
         id,
       },
+      include: {
+        tags: true,
+      },
     });
 
     return course;
@@ -70,6 +74,9 @@ export class CourseRepository implements ICourseRepository {
     const courses = await prisma.course.findMany({
       where: {
         educatorId,
+      },
+      include: {
+        tags: true,
       },
     });
 

@@ -4,6 +4,7 @@ import { Joi, Segments, celebrate } from "celebrate";
 import { isAuthenticated } from "../../../shared/http/middlewares/isAuthenticated";
 import { listTopicsController } from "../useCases/listTopics";
 import { createTopicController } from "../useCases/createTopic";
+import { findTopicByIdController } from "../useCases/findTopicById";
 
 const topicRouter = Router();
 
@@ -21,6 +22,18 @@ topicRouter.post(
   }),
   (req, res) => {
     return createTopicController.handle(req, res);
+  }
+);
+
+topicRouter.get(
+  "/:topicId",
+  celebrate({
+    [Segments.PARAMS]: {
+      topicId: Joi.string().uuid().required(),
+    },
+  }),
+  (req, res) => {
+    return findTopicByIdController.handle(req, res);
   }
 );
 
