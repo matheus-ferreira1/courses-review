@@ -1,11 +1,13 @@
 import { Link } from "react-router-dom";
 import { Card, CardContent } from "./ui/card";
+import { Badge } from "./ui/badge";
 
 interface CourseCardProps {
   course: {
     id: string;
     title: string;
     description: string;
+    tags: [{ id: string; name: string }];
   };
 }
 
@@ -18,6 +20,11 @@ export default function CourseCard({ course }: CourseCardProps) {
           <p className="line-clamp-3 font-thin text-muted-foreground text-sm h-auto">
             {course.description}
           </p>
+          <div className="space-x-1">
+            {course.tags.map((tag) => (
+              <Badge key={tag.id}>{tag.name}</Badge>
+            ))}
+          </div>
         </CardContent>
       </Card>
     </Link>
