@@ -27,12 +27,10 @@ export class CourseRepository implements ICourseRepository {
       data: {
         title,
         description,
-        price,
+        price: Number(price),
         educatorId,
         topicId,
-        tags: {
-          create: tags.map((tag) => ({ name: tag })),
-        },
+        tags,
       },
     });
 
@@ -49,9 +47,6 @@ export class CourseRepository implements ICourseRepository {
       where: {
         topicId,
       },
-      include: {
-        tags: true,
-      },
     });
 
     return courses;
@@ -63,7 +58,6 @@ export class CourseRepository implements ICourseRepository {
         id,
       },
       include: {
-        tags: true,
         educator: true,
       },
     });
@@ -75,9 +69,6 @@ export class CourseRepository implements ICourseRepository {
     const courses = await prisma.course.findMany({
       where: {
         educatorId,
-      },
-      include: {
-        tags: true,
       },
     });
 

@@ -9,10 +9,10 @@ import { TopicRepository } from "../../../topics/repository/TopicRepository";
 type CreateCourseDTO = {
   title: string;
   description: string;
-  educatorId: string;
+  educatorName: string;
   price: number;
-  topicId: string;
-  tags: string[];
+  topicName: string;
+  tags: string;
 };
 
 export class CreateCourseUseCase {
@@ -25,17 +25,19 @@ export class CreateCourseUseCase {
   async execute({
     title,
     description,
-    educatorId,
+    educatorName,
     price,
-    topicId,
+    topicName,
     tags,
   }: CreateCourseDTO): Promise<Course> {
-    const educator = await this.educatorRepository.findEducatorById(educatorId);
+    const educator = await this.educatorRepository.findEducatorByName(
+      educatorName
+    );
     if (!educator) {
       throw new AppError("Educator not found", 404);
     }
 
-    const topic = await this.topicRepository.findTopicById(topicId);
+    const topic = await this.topicRepository.findTopicByName(topicName);
     if (!topic) {
       throw new AppError("Topic not found", 404);
     }
@@ -50,9 +52,9 @@ export class CreateCourseUseCase {
     const course = await this.courseRepository.createCourse({
       title,
       description,
-      educatorId,
+      educatorId: educator.id,
       price,
-      topicId,
+      topicId: topic.id,
       tags,
     });
 

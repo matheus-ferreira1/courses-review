@@ -22,17 +22,14 @@ export default function EducatorCard({
       key={educator.id}
       className={cn(className)}
     >
-      <Card className="transition-all hover:border-primary hover:border hover:shadow-lg">
-        <CardContent className="flex flex-col aspect-square items-center justify-center p-4 space-y-4">
+      <Card className="transition-all hover:border-primary hover:border hover:shadow-lg ">
+        <CardContent className="flex items-center justify-center gap-4 p-4">
           <img
             src={educator.imgUrl}
             alt={`Imagem de perfil de ${educator.name}`}
-            className="rounded-full size-24 object-cover"
+            className="rounded-full size-20 object-cover"
           />
-          <h2 className="font-bold">{educator.name}</h2>
-          <p className="line-clamp-3 font-thin text-muted-foreground text-sm h-auto">
-            {educator.description}
-          </p>
+          <h2 className="font-bold truncate">{educator.name}</h2>
         </CardContent>
       </Card>
     </Link>

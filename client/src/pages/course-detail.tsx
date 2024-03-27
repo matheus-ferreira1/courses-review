@@ -13,6 +13,8 @@ export default function CourseDetail() {
   const { courseId } = useParams();
   const navigate = useNavigate();
 
+  const useQueryFn = () => useGetCourseById(courseId!);
+
   const {
     isPending,
     isError,
@@ -20,7 +22,7 @@ export default function CourseDetail() {
     error,
   } = useQuery({
     queryKey: ["curso"],
-    queryFn: () => useGetCourseById(courseId!!),
+    queryFn: useQueryFn,
   });
 
   if (isError) {
@@ -63,8 +65,8 @@ export default function CourseDetail() {
             <p className="text-justify">{course.description}</p>
 
             <div className="space-x-1">
-              {course.tags.map((tag) => (
-                <Badge key={tag.id}>{tag.name}</Badge>
+              {course.tags.split(",").map((tag) => (
+                <Badge key={tag}>{tag}</Badge>
               ))}
             </div>
 

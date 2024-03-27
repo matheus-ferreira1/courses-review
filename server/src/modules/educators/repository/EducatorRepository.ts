@@ -48,6 +48,20 @@ export class EducatorRepository implements IEducatorRepository {
     return educator;
   }
 
+  async findEducatorByNameAutocomplete(
+    educatorName: string
+  ): Promise<Educator[] | null> {
+    const educator = await prisma.educator.findMany({
+      where: {
+        name: {
+          contains: educatorName,
+        },
+      },
+    });
+
+    return educator;
+  }
+
   async findEducatorById(id: string): Promise<Educator | null> {
     const educator = await prisma.educator.findUnique({
       where: {

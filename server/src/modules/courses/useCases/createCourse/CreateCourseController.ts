@@ -5,15 +5,15 @@ export class CreateCourseController {
   constructor(private createCourseUseCase: CreateCourseUseCase) {}
 
   async handle(request: Request, response: Response): Promise<Response> {
-    const { title, description, price, educatorId, topicId, tags } =
+    const { title, description, price, educatorName, topicName, tags } =
       request.body;
 
     const course = await this.createCourseUseCase.execute({
       title,
       description,
       price,
-      educatorId,
-      topicId,
+      educatorName,
+      topicName,
       tags,
     });
 

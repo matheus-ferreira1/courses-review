@@ -6,7 +6,7 @@ export type CreateCourseDTO = {
   price: number;
   educatorId: string;
   topicId: string;
-  tags: string[];
+  tags: string;
 };
 
 export interface ICourseRepository {

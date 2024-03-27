@@ -6,7 +6,7 @@ export type Course = {
   educatorId?: string;
   id: string;
   price: number;
-  tags: [{ id: string; name: string }];
+  tags: string;
   title: string;
   topicId?: string;
   comments?: string[];

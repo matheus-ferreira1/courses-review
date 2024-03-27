@@ -1,30 +1,34 @@
+import { useRef, useState } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
-import { useForm, Controller } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { useCookies } from "react-cookie";
 import { Loader2 } from "lucide-react";
+import { debounce } from "lodash";
+
+import { Educator } from "@/types/educator";
+import { cn } from "@/lib/utils";
 
 import Layout from "@/components/layout";
-import { Button } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useToast } from "@/components/ui/use-toast";
 import { Textarea } from "@/components/ui/textarea";
 import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import { Close } from "@radix-ui/react-popover";
 
 export type NewCourseFormTypes = {
   title: string;
   description: string;
   price: number;
-  educatorId: string;
-  tags: string[];
+  educatorName: string;
+  topicName: string;
+  tags: string;
 };
 
 export default function NewCourse() {
@@ -33,11 +37,34 @@ export default function NewCourse() {
   const [cookies] = useCookies(["auth-token"]);
   const { toast } = useToast();
 
+  const [educatorSearchTerm, setEducatorSearchTerm] = useState<string>("");
+  const [educatorSearchResults, setEducatorSearchResults] = useState<
+    Educator[] | []
+  >([]);
+
+  const debouncedEducatorSearch = useRef(
+    debounce(async (searchTerm: string) => {
+      const response = await fetch(
+        `${API_BASE_URL}/educators/findByName/${searchTerm}`
+      );
+      const data = await response.json();
+
+      setEducatorSearchResults(data);
+    }, 1000)
+  ).current;
+
+  const handleEducatorSearch = async (
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    setEducatorSearchTerm(e.target.value);
+
+    debouncedEducatorSearch(educatorSearchTerm);
+  };
+
   const {
     register,
     handleSubmit,
     formState: { errors },
-    control,
   } = useForm<NewCourseFormTypes>();
 
   const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "";
@@ -83,8 +110,7 @@ export default function NewCourse() {
   });
 
   const onSubmit = handleSubmit((data) => {
-    // mutate(data);
-
+    mutate(data);
     console.log(data);
   });
 
@@ -107,6 +133,7 @@ export default function NewCourse() {
               {errors.title.message}
             </span>
           )}
+
           <Label htmlFor="description">Descrição</Label>
           <Textarea
             id="description"
@@ -120,68 +147,86 @@ export default function NewCourse() {
               {errors.description.message}
             </span>
           )}
-          <Label htmlFor="price">Preço</Label>
-          <Input
-            type="number"
-            id="price"
-            className="border w-full py-1 px-2 font-normal -mt-3"
-            {...register("price", { required: "Este campo é obrigatório" })}
-          />
-          {errors.price && (
-            <span className="text-red-500 -mt-5 font-bold">
-              {errors.price.message}
-            </span>
-          )}
 
-          <Label htmlFor="educatorId" className="-mb-3">
-            Autor
-          </Label>
-          <Controller
-            name="educatorId"
-            control={control}
-            rules={{ required: "Este campo é obrigatório" }}
-            render={({ field }) => (
-              <Select onValueChange={field.onChange}>
-                <SelectTrigger>
-                  <SelectValue placeholder="Select a fruit" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectGroup>
-                    <SelectItem value="apple">Apple</SelectItem>
-                    <SelectItem value="banana">Banana</SelectItem>
-                    <SelectItem value="blueberry">Blueberry</SelectItem>
-                    <SelectItem value="grapes">Grapes</SelectItem>
-                    <SelectItem value="pineapple">Pineapple</SelectItem>
-                  </SelectGroup>
-                </SelectContent>
-              </Select>
-            )}
-          />
-          {errors.educatorId && (
+          <div className="flex items-center justify-between gap-4">
+            <div className="w-full">
+              <Label htmlFor="price">Preço</Label>
+              <Input
+                type="number"
+                id="price"
+                step="0.01"
+                className="border w-full py-1 px-2 font-normal"
+                {...register("price", { required: "Este campo é obrigatório" })}
+              />
+              {errors.price && (
+                <span className="text-red-500 -mt-5 font-bold">
+                  {errors.price.message}
+                </span>
+              )}
+            </div>
+
+            <div className="w-full">
+              <Label htmlFor="topicName">Tópico</Label>
+              <Input
+                type="text"
+                id="topicName"
+                className="border w-full py-1 px-2 font-normal"
+                {...register("topicName", {
+                  required: "Este campo é obrigatório",
+                })}
+              />
+              {errors.topicName && (
+                <span className="text-red-500 -mt-5 font-bold">
+                  {errors.topicName.message}
+                </span>
+              )}
+            </div>
+          </div>
+
+          <Label htmlFor="educatorName">Autor</Label>
+          <Popover
+            open={educatorSearchResults.length > 0}
+            onOpenChange={() => {
+              setEducatorSearchResults([]);
+            }}
+          >
+            <PopoverTrigger asChild>
+              <Input
+                type="text"
+                id="educatorName"
+                className="border w-full py-1 px-2 font-normal -mt-3"
+                value={educatorSearchTerm}
+                {...register("educatorName", {
+                  required: "Este campo é obrigatório",
+                })}
+                onChange={handleEducatorSearch}
+              />
+            </PopoverTrigger>
+            <PopoverContent>
+              {educatorSearchResults.map((educator) => (
+                <Close
+                  onClick={() => setEducatorSearchTerm(educator.name)}
+                  className={cn("w-full", buttonVariants({ variant: "ghost" }))}
+                  key={educator.id}
+                >
+                  {educator.name}
+                </Close>
+              ))}
+            </PopoverContent>
+          </Popover>
+          {errors.educatorName && (
             <span className="text-red-500 -mt-5 font-bold">
-              {errors.educatorId.message}
+              {errors.educatorName.message}
             </span>
           )}
 
           <Label htmlFor="tags">Tags</Label>
-          <Controller
-            name="tags"
-            control={control}
-            rules={{ required: "Este campo é obrigatório" }}
-            render={({ field }) => (
-              <Input
-                {...field}
-                type="text"
-                id="tags"
-                placeholder="Insira tags separadas por vírgula"
-                className="border w-full py-1 px-2 font-normal -mt-3"
-                onChange={(e) =>
-                  field.onChange(
-                    e.target.value.split(",").map((tag) => tag.trim())
-                  )
-                }
-              />
-            )}
+          <Input
+            type="text"
+            id="tags"
+            placeholder="Insira as tags separadas por vírgula..."
+            className="border w-full py-1 px-2 font-normal -mt-3"
+            {...register("tags", { required: "Este campo é obrigatório" })}
           />
           {errors.tags && (
             <span className="text-red-500 -mt-5 font-bold">

@@ -41,7 +41,7 @@ model Course {
   price       Float
   comments    Comment[]
   ratings     Rating[]
-  tags        Tag[]
+  tags        String
   
   educator   Educator @relation(fields: [educatorId], references: [id])
   educatorId String
@@ -50,13 +50,6 @@ model Course {
 }
 
 model Topic {
-  id   String @id @default(uuid())
-  name String
-
-  courses Course[]
-}
-
-model Tag {
   id   String @id @default(uuid())
   name String
 

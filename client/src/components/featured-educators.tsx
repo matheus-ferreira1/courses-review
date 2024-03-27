@@ -4,9 +4,8 @@ import { useQuery } from "@tanstack/react-query";
 import { useGetEducators } from "@/services/useGetEducators";
 
 import { buttonVariants } from "./ui/button";
-import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
-import Skeleton from "./skeleton";
 import EducatorCard from "./educator-card";
+import EducatorSkeleton from "./educator-skeleton";
 
 const FeaturedEducators = () => {
   const {
@@ -42,20 +41,13 @@ const FeaturedEducators = () => {
       </div>
 
       {isPending ? (
-        <Skeleton />
+        <EducatorSkeleton />
       ) : (
-        <ScrollArea className="w-full">
-          <div className="flex gap-4 pb-4">
-            {educators!!.slice(0, 5).map((educator) => (
-              <EducatorCard
-                key={educator.id}
-                educator={educator}
-                className="size-72"
-              />
-            ))}
-          </div>
-          <ScrollBar orientation="horizontal" />
-        </ScrollArea>
+        <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
+          {educators.slice(0, 5).map((educator) => (
+            <EducatorCard key={educator.id} educator={educator} />
+          ))}
+        </div>
       )}
     </div>
   );
