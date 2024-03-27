@@ -10,7 +10,7 @@ export default function LogoMain({ className }: LogoMainProps) {
     <NavLink
       to="/"
       className={cn(
-        "flex justify-between items-center gap-2 bg-primary py-2 px-4 text-white font-bold",
+        "flex justify-between items-center gap-2 bg-primary text-primary-foreground py-2 px-4 font-bold",
         className
       )}
     >
