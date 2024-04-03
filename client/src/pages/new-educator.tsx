@@ -1,8 +1,11 @@
+import { useEffect } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Loader2 } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { useCookies } from "react-cookie";
+
+import { useAuthStore } from "@/stores/auth-store";
 
 import Layout from "@/components/layout";
 import { useToast } from "@/components/ui/use-toast";
@@ -22,6 +25,17 @@ export default function NewEducator() {
   const queryClient = useQueryClient();
   const { toast } = useToast();
   const [cookies] = useCookies(["auth-token"]);
+  const { isLoggedIn } = useAuthStore((state) => state);
+
+  useEffect(() => {
+    if (!isLoggedIn) {
+      toast({
+        title: "É necessário estar logado para acessar esta página",
+      });
+      navigate("/login");
+      return;
+    }
+  }, [isLoggedIn, navigate, toast]);
 
   const {
     register,

@@ -1,8 +1,11 @@
+import { useEffect } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { useCookies } from "react-cookie";
 import { Loader2 } from "lucide-react";
+
+import { useAuthStore } from "@/stores/auth-store";
 
 import Layout from "@/components/layout";
 import { Button } from "@/components/ui/button";
@@ -19,6 +22,17 @@ export default function NewTopic() {
   const queryClient = useQueryClient();
   const [cookies] = useCookies(["auth-token"]);
   const { toast } = useToast();
+  const { isLoggedIn } = useAuthStore((state) => state);
+
+  useEffect(() => {
+    if (!isLoggedIn) {
+      toast({
+        title: "É necessário estar logado para acessar esta página",
+      });
+      navigate("/login");
+      return;
+    }
+  }, [isLoggedIn, navigate, toast]);
 
   const {
     register,

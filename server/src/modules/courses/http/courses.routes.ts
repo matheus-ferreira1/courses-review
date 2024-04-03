@@ -6,6 +6,7 @@ import { createCourseController } from "../useCases/createCourse";
 import { findCourseByEducatorController } from "../useCases/findCourseByEducator";
 import { findCourseByTopicController } from "../useCases/findCourseByTopic";
 import { findCourseByIdController } from "../useCases/findCourseById";
+import { isAuthenticated } from "../../../shared/http/middlewares/isAuthenticated";
 
 const courseRouter = Router();
 
@@ -13,7 +14,7 @@ courseRouter.get("/", (req, res) => {
   return listCoursesController.handle(req, res);
 });
 
-courseRouter.post("/", (req, res) => {
+courseRouter.post("/", isAuthenticated, (req, res) => {
   return createCourseController.handle(req, res);
 });
 

@@ -6,8 +6,7 @@ import LogoMain from "./logo-main";
 import UserNav from "./user-nav";
 
 export default function Header() {
-  const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
-  const user = useAuthStore((state) => state.user);
+  const { isLoggedIn, user } = useAuthStore((state) => state);
 
   return (
     <header className="border-b py-3">
@@ -18,7 +17,7 @@ export default function Header() {
             <li>
               <ThemeToggle />
             </li>
-            {isLoggedIn() ? (
+            {isLoggedIn ? (
               <>
                 <li>
                   <NavLink to="/register">Nova review</NavLink>

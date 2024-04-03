@@ -1,5 +1,10 @@
 import { NextFunction, Request, Response } from "express";
-import { Secret, verify } from "jsonwebtoken";
+import {
+  JsonWebTokenError,
+  Secret,
+  TokenExpiredError,
+  verify,
+} from "jsonwebtoken";
 
 import authConfig from "../../../config/auth";
 import { AppError } from "../../errors/AppError";
@@ -27,7 +32,13 @@ export const isAuthenticated = (
     };
 
     return next();
-  } catch {
+  } catch (err) {
+    if (err instanceof TokenExpiredError) {
+      throw new AppError("Access token expired", 401);
+    }
+    if (err instanceof JsonWebTokenError) {
+      throw new AppError("Invalid access token", 401);
+    }
     throw new AppError("Failed to verify access token", 401);
   }
 };

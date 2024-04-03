@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
@@ -8,6 +9,7 @@ import { Loader2 } from "lucide-react";
 
 import { useGetEducators } from "@/services/useGetEducators";
 import { useGetTopics } from "@/services/useGetTopics";
+import { useAuthStore } from "@/stores/auth-store";
 
 import Layout from "@/components/layout";
 import { Button } from "@/components/ui/button";
@@ -45,6 +47,17 @@ export default function NewCourse() {
   const queryClient = useQueryClient();
   const [cookies] = useCookies(["auth-token"]);
   const { toast } = useToast();
+  const { isLoggedIn } = useAuthStore((state) => state);
+
+  useEffect(() => {
+    if (!isLoggedIn) {
+      toast({
+        title: "É necessário estar logado para acessar esta página",
+      });
+      navigate("/login");
+      return;
+    }
+  }, [isLoggedIn, navigate, toast]);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),

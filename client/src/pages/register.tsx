@@ -26,7 +26,7 @@ export default function Register() {
   const { isLoggedIn } = useAuthStore((state) => state);
 
   useEffect(() => {
-    if (isLoggedIn()) {
+    if (isLoggedIn) {
       navigate("/");
     }
   }, [isLoggedIn]);

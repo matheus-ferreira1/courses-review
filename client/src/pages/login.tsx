@@ -24,10 +24,10 @@ export default function Login() {
   const queryClient = useQueryClient();
   const [cookies, setCookie] = useCookies(["auth-token"]);
   const { toast } = useToast();
-  const { setUser, setToken, isLoggedIn } = useAuthStore((state) => state);
+  const { isLoggedIn, setAuth } = useAuthStore((state) => state);
 
   useEffect(() => {
-    if (isLoggedIn()) {
+    if (isLoggedIn) {
       navigate("/");
     }
   }, [isLoggedIn]);
@@ -42,13 +42,12 @@ export default function Login() {
     mutationFn: useSignInUser,
     onSuccess: async (data) => {
       await queryClient.invalidateQueries({ queryKey: ["validate-token"] });
-      setUser(data.responseUser);
-      setToken(data.token);
+      setAuth(data.responseUser, data.token);
+      setCookie("auth-token", data.token);
       toast({
         title: "Login feito com sucesso!",
         description: "Publique já sua primeira review!",
       });
-      setCookie("auth-token", data.token);
       navigate("/");
     },
     onError: (error) => {
