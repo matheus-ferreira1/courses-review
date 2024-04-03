@@ -12,6 +12,8 @@ interface CoursesListByEducatorProps {
 export default function CoursesListByEducator({
   educatorId,
 }: CoursesListByEducatorProps) {
+  const useQueryFn = () => useGetCoursesByEducator(educatorId!);
+
   const {
     isPending,
     isError,
@@ -19,7 +21,7 @@ export default function CoursesListByEducator({
     error,
   } = useQuery({
     queryKey: ["coursesByEducator"],
-    queryFn: () => useGetCoursesByEducator(educatorId!!),
+    queryFn: useQueryFn,
   });
 
   if (isError) {

@@ -1,35 +1,44 @@
-import { useRef, useState } from "react";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { useNavigate } from "react-router-dom";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { useCookies } from "react-cookie";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { Loader2 } from "lucide-react";
-import { debounce } from "lodash";
 
-import { Educator } from "@/types/educator";
-import { cn } from "@/lib/utils";
+import { useGetEducators } from "@/services/useGetEducators";
+import { useGetTopics } from "@/services/useGetTopics";
 
 import Layout from "@/components/layout";
-import { Button, buttonVariants } from "@/components/ui/button";
+import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { useToast } from "@/components/ui/use-toast";
 import { Textarea } from "@/components/ui/textarea";
 import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
-import { Close } from "@radix-ui/react-popover";
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import { Separator } from "@/components/ui/separator";
 
-export type NewCourseFormTypes = {
-  title: string;
-  description: string;
-  price: number;
-  educatorName: string;
-  topicName: string;
-  tags: string;
-};
+const formSchema = z.object({
+  title: z.string(),
+  description: z.string(),
+  price: z.number().gt(0),
+  educatorName: z.string(),
+  topicName: z.string(),
+  tags: z.string(),
+});
 
 export default function NewCourse() {
   const navigate = useNavigate();
@@ -37,40 +46,32 @@ export default function NewCourse() {
   const [cookies] = useCookies(["auth-token"]);
   const { toast } = useToast();
 
-  const [educatorSearchTerm, setEducatorSearchTerm] = useState<string>("");
-  const [educatorSearchResults, setEducatorSearchResults] = useState<
-    Educator[] | []
-  >([]);
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      title: "",
+      description: "",
+      price: 0,
+      educatorName: "",
+      topicName: "",
+      tags: "",
+    },
+  });
 
-  const debouncedEducatorSearch = useRef(
-    debounce(async (searchTerm: string) => {
-      const response = await fetch(
-        `${API_BASE_URL}/educators/findByName/${searchTerm}`
-      );
-      const data = await response.json();
+  const educatorQuery = useQuery({
+    queryKey: ["educators"],
+    queryFn: useGetEducators,
+  });
 
-      setEducatorSearchResults(data);
-    }, 1000)
-  ).current;
-
-  const handleEducatorSearch = async (
-    e: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    setEducatorSearchTerm(e.target.value);
-
-    debouncedEducatorSearch(educatorSearchTerm);
-  };
-
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<NewCourseFormTypes>();
+  const topicQuery = useQuery({
+    queryKey: ["topics"],
+    queryFn: useGetTopics,
+  });
 
   const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "";
 
   const { mutate, isPending } = useMutation({
-    mutationFn: async (formData: NewCourseFormTypes) => {
+    mutationFn: async (formData: z.infer<typeof formSchema>) => {
       const authToken = cookies["auth-token"];
 
       const response = await fetch(`${API_BASE_URL}/courses`, {
@@ -109,10 +110,9 @@ export default function NewCourse() {
     },
   });
 
-  const onSubmit = handleSubmit((data) => {
-    mutate(data);
-    console.log(data);
-  });
+  const onSubmit = (values: z.infer<typeof formSchema>) => {
+    mutate(values);
+  };
 
   return (
     <Layout>
@@ -120,124 +120,156 @@ export default function NewCourse() {
         <h1 className="text-2xl font-extrabold tracking-tight lg:text-4xl">
           Cadastro de novo curso
         </h1>
-        <form className="flex flex-col gap-5" onSubmit={onSubmit}>
-          <Label htmlFor="title">Título</Label>
-          <Input
-            type="text"
-            id="title"
-            className="border w-full py-1 px-2 font-normal -mt-3"
-            {...register("title", { required: "Este campo é obrigatório" })}
-          />
-          {errors.title && (
-            <span className="text-red-500 -mt-5 font-bold">
-              {errors.title.message}
-            </span>
-          )}
 
-          <Label htmlFor="description">Descrição</Label>
-          <Textarea
-            id="description"
-            className="border w-full py-1 px-2 font-normal -mt-3"
-            {...register("description", {
-              required: "Este campo é obrigatório",
-            })}
-          />
-          {errors.description && (
-            <span className="text-red-500 -mt-5 font-bold">
-              {errors.description.message}
-            </span>
-          )}
-
-          <div className="flex items-center justify-between gap-4">
-            <div className="w-full">
-              <Label htmlFor="price">Preço</Label>
-              <Input
-                type="number"
-                id="price"
-                step="0.01"
-                className="border w-full py-1 px-2 font-normal"
-                {...register("price", { required: "Este campo é obrigatório" })}
-              />
-              {errors.price && (
-                <span className="text-red-500 -mt-5 font-bold">
-                  {errors.price.message}
-                </span>
-              )}
-            </div>
-
-            <div className="w-full">
-              <Label htmlFor="topicName">Tópico</Label>
-              <Input
-                type="text"
-                id="topicName"
-                className="border w-full py-1 px-2 font-normal"
-                {...register("topicName", {
-                  required: "Este campo é obrigatório",
-                })}
-              />
-              {errors.topicName && (
-                <span className="text-red-500 -mt-5 font-bold">
-                  {errors.topicName.message}
-                </span>
-              )}
-            </div>
-          </div>
-
-          <Label htmlFor="educatorName">Autor</Label>
-          <Popover
-            open={educatorSearchResults.length > 0}
-            onOpenChange={() => {
-              setEducatorSearchResults([]);
-            }}
+        <Form {...form}>
+          <form
+            className="flex flex-col gap-5"
+            onSubmit={form.handleSubmit(onSubmit)}
           >
-            <PopoverTrigger asChild>
-              <Input
-                type="text"
-                id="educatorName"
-                className="border w-full py-1 px-2 font-normal -mt-3"
-                value={educatorSearchTerm}
-                {...register("educatorName", {
-                  required: "Este campo é obrigatório",
-                })}
-                onChange={handleEducatorSearch}
-              />
-            </PopoverTrigger>
-            <PopoverContent>
-              {educatorSearchResults.map((educator) => (
-                <Close
-                  onClick={() => setEducatorSearchTerm(educator.name)}
-                  className={cn("w-full", buttonVariants({ variant: "ghost" }))}
-                  key={educator.id}
-                >
-                  {educator.name}
-                </Close>
-              ))}
-            </PopoverContent>
-          </Popover>
-          {errors.educatorName && (
-            <span className="text-red-500 -mt-5 font-bold">
-              {errors.educatorName.message}
-            </span>
-          )}
+            <FormField
+              control={form.control}
+              name="title"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel htmlFor="title">Título</FormLabel>
+                  <FormControl>
+                    <Input {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="description"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel htmlFor="description">Descrição</FormLabel>
+                  <FormControl>
+                    <Textarea {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
 
-          <Label htmlFor="tags">Tags</Label>
-          <Input
-            type="text"
-            id="tags"
-            placeholder="Insira as tags separadas por vírgula..."
-            className="border w-full py-1 px-2 font-normal -mt-3"
-            {...register("tags", { required: "Este campo é obrigatório" })}
-          />
-          {errors.tags && (
-            <span className="text-red-500 -mt-5 font-bold">
-              {errors.tags.message}
-            </span>
-          )}
+            <div className="flex items-start justify-between gap-4">
+              <div className="w-full">
+                <FormField
+                  control={form.control}
+                  name="price"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel htmlFor="price">Preço</FormLabel>
+                      <FormControl>
+                        <Input
+                          type="number"
+                          step="0.01"
+                          {...field}
+                          onChange={(e) =>
+                            field.onChange(parseFloat(e.target.value))
+                          }
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+              <div className="w-full">
+                <FormField
+                  control={form.control}
+                  name="topicName"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel htmlFor="topicName">Tópico</FormLabel>
+                      <Select
+                        onValueChange={field.onChange}
+                        disabled={topicQuery.isPending}
+                      >
+                        <FormControl>
+                          <SelectTrigger>
+                            <SelectValue placeholder="Selecione um tópico" />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          {topicQuery.data?.map((topic) => (
+                            <SelectItem key={topic.id} value={topic.name}>
+                              {topic.name}
+                            </SelectItem>
+                          ))}
+                          <Separator />
+                          <Link
+                            to="/new-topic"
+                            className="w-full text-sm hover:underline pl-8 leading-6"
+                          >
+                            Cadastrar novo tópico
+                          </Link>
+                        </SelectContent>
+                      </Select>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+            </div>
 
-          <Button disabled={isPending}>
-            {isPending ? <Loader2 className="animate-spin" /> : "Cadastrar"}
-          </Button>
-        </form>
+            <FormField
+              control={form.control}
+              name="educatorName"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel htmlFor="educatorName">Autor</FormLabel>
+                  <Select
+                    disabled={educatorQuery.isPending}
+                    onValueChange={field.onChange}
+                  >
+                    <FormControl>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Selecione um autor" />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      {educatorQuery.data?.map((educator) => (
+                        <SelectItem key={educator.id} value={educator.name}>
+                          {educator.name}
+                        </SelectItem>
+                      ))}
+                      <Separator />
+                      <Link
+                        to="/new-educator"
+                        className="w-full text-sm hover:underline pl-8 leading-6"
+                      >
+                        Cadastrar novo autor
+                      </Link>
+                    </SelectContent>
+                  </Select>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="tags"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel htmlFor="tags">Tags</FormLabel>
+                  <FormControl>
+                    <Input
+                      placeholder="Insira as tags separadas por vírgula..."
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <Button type="submit" disabled={isPending}>
+              {isPending ? <Loader2 className="animate-spin" /> : "Cadastrar"}
+            </Button>
+          </form>
+        </Form>
       </div>
     </Layout>
   );

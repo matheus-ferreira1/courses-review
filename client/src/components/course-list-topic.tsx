@@ -11,6 +11,8 @@ interface CoursesListByTopicProps {
 export default function CoursesListByTopic({
   topicId,
 }: CoursesListByTopicProps) {
+  const useQueryFn = () => useGetCoursesByTopic(topicId!);
+
   const {
     isPending,
     isError,
@@ -18,7 +20,7 @@ export default function CoursesListByTopic({
     error,
   } = useQuery({
     queryKey: ["coursesByTopic"],
-    queryFn: () => useGetCoursesByTopic(topicId!!),
+    queryFn: useQueryFn,
   });
 
   if (isError) {

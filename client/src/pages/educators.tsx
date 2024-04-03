@@ -6,8 +6,8 @@ import { useGetEducators } from "@/services/useGetEducators";
 
 import Layout from "@/components/layout";
 import { buttonVariants } from "@/components/ui/button";
-import Skeleton from "@/components/skeleton";
 import EducatorCard from "@/components/educator-card";
+import EducatorSkeleton from "@/components/educator-skeleton";
 
 export default function Educators() {
   const {
@@ -40,7 +40,7 @@ export default function Educators() {
           </Link>
         </div>
         {isPending ? (
-          <Skeleton />
+          <EducatorSkeleton />
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
             {educators.map((educator) => (
