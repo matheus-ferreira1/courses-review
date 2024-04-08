@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { Link, useNavigate, useParams } from "react-router-dom";
-import { Loader2, PlusCircle } from "lucide-react";
+import { Loader2 } from "lucide-react";
 
 import { useGetCourseById } from "@/services/useGetCourseById";
 
@@ -8,6 +8,7 @@ import Layout from "@/components/layout";
 import { buttonVariants } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { Badge } from "@/components/ui/badge";
+import ReviewList from "@/components/review-list";
 
 export default function CourseDetail() {
   const { courseId } = useParams();
@@ -72,18 +73,7 @@ export default function CourseDetail() {
 
             <Separator className="my-4" />
 
-            <div className="flex items-center justify-between">
-              <h2 className="text-2xl font-extrabold tracking-tight">
-                Avaliações
-              </h2>
-              <Link
-                className={buttonVariants({ variant: "outline" })}
-                to="/new-course"
-              >
-                <PlusCircle size={20} strokeWidth={1.5} className="mr-2" />
-                Nova
-              </Link>
-            </div>
+            <ReviewList />
           </>
         )}
       </div>

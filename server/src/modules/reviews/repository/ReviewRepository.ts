@@ -20,6 +20,13 @@ export class ReviewRepository implements IReviewRepository {
       where: {
         courseId,
       },
+      include: {
+        user: {
+          select: {
+            name: true,
+          },
+        },
+      },
     });
     return reviews;
   }

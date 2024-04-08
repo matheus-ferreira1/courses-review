@@ -28,7 +28,7 @@ export default function CoursesListByTopic({
   }
 
   if (courses?.length === 0) {
-    return <div>Não há cursos para este educador</div>;
+    return <div>Não há cursos para este tópico</div>;
   }
 
   return (
