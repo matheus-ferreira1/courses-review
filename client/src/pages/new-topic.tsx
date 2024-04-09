@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
-import { useCookies } from "react-cookie";
+import Cookies from "js-cookie";
 import { Loader2 } from "lucide-react";
 
 import { useAuthStore } from "@/stores/auth-store";
@@ -20,7 +20,6 @@ export type NewTopicFormTypes = {
 export default function NewTopic() {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
-  const [cookies] = useCookies(["auth-token"]);
   const { toast } = useToast();
   const { isLoggedIn } = useAuthStore((state) => state);
 
@@ -44,7 +43,7 @@ export default function NewTopic() {
 
   const { mutate, isPending } = useMutation({
     mutationFn: async (formData: NewTopicFormTypes) => {
-      const authToken = cookies["auth-token"];
+      const authToken = Cookies.get("auth-token");
 
       const response = await fetch(`${API_BASE_URL}/topics`, {
         method: "POST",

@@ -3,7 +3,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Loader2 } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
-import { useCookies } from "react-cookie";
+import Cookies from "js-cookie";
 
 import { useAuthStore } from "@/stores/auth-store";
 
@@ -24,7 +24,6 @@ export default function NewEducator() {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
   const { toast } = useToast();
-  const [cookies] = useCookies(["auth-token"]);
   const { isLoggedIn } = useAuthStore((state) => state);
 
   useEffect(() => {
@@ -47,7 +46,7 @@ export default function NewEducator() {
 
   const { mutate, isPending } = useMutation({
     mutationFn: async (formData: NewEducatorFormTypes) => {
-      const authToken = cookies["auth-token"];
+      const authToken = Cookies.get("auth-token");
 
       const response = await fetch(`${API_BASE_URL}/educators`, {
         method: "POST",

@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
-import { useCookies } from "react-cookie";
+import Cookies from "js-cookie";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Loader2 } from "lucide-react";
@@ -45,7 +45,6 @@ const formSchema = z.object({
 export default function NewCourse() {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
-  const [cookies] = useCookies(["auth-token"]);
   const { toast } = useToast();
   const { isLoggedIn } = useAuthStore((state) => state);
 
@@ -85,7 +84,7 @@ export default function NewCourse() {
 
   const { mutate, isPending } = useMutation({
     mutationFn: async (formData: z.infer<typeof formSchema>) => {
-      const authToken = cookies["auth-token"];
+      const authToken = Cookies.get("auth-token");
 
       const response = await fetch(`${API_BASE_URL}/courses`, {
         method: "POST",

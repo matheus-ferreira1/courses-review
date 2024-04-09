@@ -3,7 +3,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { NavLink, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { Loader2 } from "lucide-react";
-import { useCookies } from "react-cookie";
+import Cookies from "js-cookie";
 
 import { useSignInUser } from "@/services/useSignInUser";
 import { useAuthStore } from "@/stores/auth-store";
@@ -22,7 +22,6 @@ export type LoginFormTypes = {
 export default function Login() {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
-  const [cookies, setCookie] = useCookies(["auth-token"]);
   const { toast } = useToast();
   const { isLoggedIn, setAuth } = useAuthStore((state) => state);
 
@@ -30,7 +29,7 @@ export default function Login() {
     if (isLoggedIn) {
       navigate("/");
     }
-  }, [isLoggedIn]);
+  }, [isLoggedIn, navigate]);
 
   const {
     register,
@@ -43,7 +42,7 @@ export default function Login() {
     onSuccess: async (data) => {
       await queryClient.invalidateQueries({ queryKey: ["validate-token"] });
       setAuth(data.responseUser, data.token);
-      setCookie("auth-token", data.token);
+      Cookies.set("auth-token", data.token, { path: "/" });
       toast({
         title: "Login feito com sucesso!",
         description: "Publique já sua primeira review!",

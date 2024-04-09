@@ -1,7 +1,6 @@
 import QueryProvider from "./query-provider";
 import { ThemeProvider } from "./theme-provider";
 import { BrowserRouter } from "react-router-dom";
-import { CookiesProvider } from "react-cookie";
 
 import { Toaster } from "@/components/ui/toaster";
 
@@ -14,9 +13,7 @@ export default function Provider({ children }: ProviderProps) {
     <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
       <QueryProvider>
         <BrowserRouter>
-          <CookiesProvider defaultSetOptions={{ path: "/" }}>
-            {children}
-          </CookiesProvider>
+          {children}
           <Toaster />
         </BrowserRouter>
       </QueryProvider>

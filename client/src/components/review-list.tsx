@@ -1,9 +1,10 @@
 import { Link, useParams } from "react-router-dom";
 import { Loader2, PlusCircle } from "lucide-react";
+import { useQuery } from "@tanstack/react-query";
+
+import { useGetReviewsByCourse } from "@/services/useGetReviewByCourse";
 
 import { buttonVariants } from "./ui/button";
-import { useQuery } from "@tanstack/react-query";
-import { useGetReviewsByCourse } from "@/services/useGetReviewByCourse";
 import ReviewCard from "./review-card";
 
 export default function ReviewList() {
