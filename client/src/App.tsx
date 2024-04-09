@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { Route, Routes } from "react-router-dom";
 
 import { useAuthStore } from "./stores/auth-store";
+import { useCheckAccessToken } from "./hooks/useCheckAccessToken";
 
 import Home from "./pages/home";
 import Register from "./pages/register";
@@ -16,11 +17,13 @@ import CourseDetail from "./pages/course-detail";
 import NewCourse from "./pages/new-course";
 
 export default function App() {
-  const { checkAccessToken } = useAuthStore((state) => state);
+  // const { checkAccessToken } = useAuthStore((state) => state);
 
-  useEffect(() => {
-    checkAccessToken();
-  }, [checkAccessToken]);
+  // useEffect(() => {
+  //   checkAccessToken();
+  // }, [checkAccessToken]);
+
+  useCheckAccessToken();
 
   return (
     <>
