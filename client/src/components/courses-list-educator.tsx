@@ -20,7 +20,7 @@ export default function CoursesListByEducator({
     data: courses,
     error,
   } = useQuery({
-    queryKey: ["coursesByEducator"],
+    queryKey: ["coursesByEducator", educatorId],
     queryFn: useQueryFn,
   });
 

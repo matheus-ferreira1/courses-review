@@ -12,14 +12,16 @@ export default function EducatorDetail() {
   const { educatorId } = useParams();
   const navigate = useNavigate();
 
+  const useQueryFn = () => useGetEducatorById(educatorId!);
+
   const {
     isPending,
     isError,
     data: educator,
     error,
   } = useQuery({
-    queryKey: ["educator"],
-    queryFn: () => useGetEducatorById(educatorId!!),
+    queryKey: ["educator", educatorId],
+    queryFn: useQueryFn,
   });
 
   if (isError) {

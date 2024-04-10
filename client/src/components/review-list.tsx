@@ -18,7 +18,7 @@ export default function ReviewList() {
     data: reviews,
     error,
   } = useQuery({
-    queryKey: ["reviews"],
+    queryKey: ["reviews", courseId],
     queryFn: useQueryFn,
   });
 

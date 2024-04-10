@@ -22,7 +22,7 @@ export default function CourseDetail() {
     data: course,
     error,
   } = useQuery({
-    queryKey: ["curso"],
+    queryKey: ["course", courseId],
     queryFn: useQueryFn,
   });
 

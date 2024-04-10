@@ -85,7 +85,7 @@ export default function NewReview() {
       return data;
     },
     onSuccess: async () => {
-      await queryClient.invalidateQueries({ queryKey: ["reviews"] });
+      await queryClient.invalidateQueries({ queryKey: ["reviews", courseId] });
       toast({
         title: "Avaliação registrada com sucesso!",
       });

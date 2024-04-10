@@ -19,7 +19,7 @@ export default function CoursesListByTopic({
     data: courses,
     error,
   } = useQuery({
-    queryKey: ["coursesByTopic"],
+    queryKey: ["coursesByTopic", topicId],
     queryFn: useQueryFn,
   });
 

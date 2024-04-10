@@ -13,14 +13,16 @@ export default function TopicDetail() {
   const { topicId } = useParams();
   const navigate = useNavigate();
 
+  const useQueryFn = () => useGetTopicById(topicId!);
+
   const {
     isPending,
     isError,
     data: topic,
     error,
   } = useQuery({
-    queryKey: ["topic"],
-    queryFn: () => useGetTopicById(topicId!!),
+    queryKey: ["topic", topicId],
+    queryFn: useQueryFn,
   });
 
   if (isError) {
