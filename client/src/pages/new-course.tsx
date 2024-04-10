@@ -34,12 +34,14 @@ import {
 import { Separator } from "@/components/ui/separator";
 
 const formSchema = z.object({
-  title: z.string(),
-  description: z.string(),
-  price: z.number().gt(0),
-  educatorName: z.string(),
-  topicName: z.string(),
-  tags: z.string(),
+  title: z.string().min(1, { message: "O título é obrigatório" }),
+  description: z.string().min(1, { message: "A descrição é obrigatória" }),
+  price: z.number().gt(0, {
+    message: "O preço deve ser maior que zero",
+  }),
+  educatorName: z.string().min(1, { message: "O autor é obrigatório" }),
+  topicName: z.string().min(1, { message: "O tópico é obrigatório" }),
+  tags: z.string().min(1, { message: "As tags são obrigatórias" }),
 });
 
 export default function NewCourse() {
@@ -60,14 +62,6 @@ export default function NewCourse() {
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
-    defaultValues: {
-      title: "",
-      description: "",
-      price: 0,
-      educatorName: "",
-      topicName: "",
-      tags: "",
-    },
   });
 
   const educatorQuery = useQuery({
@@ -109,7 +103,7 @@ export default function NewCourse() {
       toast({
         title: "Curso registrado com sucesso!",
       });
-      navigate("/");
+      navigate("/educators");
     },
     onError: (error) => {
       console.log(error);
@@ -210,7 +204,7 @@ export default function NewCourse() {
                               {topic.name}
                             </SelectItem>
                           ))}
-                          <Separator />
+                          <Separator className="mb-1" />
                           <Link
                             to="/new-topic"
                             className="w-full text-sm hover:underline pl-8 leading-6"
@@ -247,7 +241,7 @@ export default function NewCourse() {
                           {educator.name}
                         </SelectItem>
                       ))}
-                      <Separator />
+                      <Separator className="mb-1" />
                       <Link
                         to="/new-educator"
                         className="w-full text-sm hover:underline pl-8 leading-6"
