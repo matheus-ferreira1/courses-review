@@ -14,6 +14,7 @@ import NewTopic from "./pages/new-topic";
 import TopicDetail from "./pages/topic-detail";
 import CourseDetail from "./pages/course-detail";
 import NewCourse from "./pages/new-course";
+import NewReview from "./pages/new-review";
 
 export default function App() {
   const { checkAccessToken } = useAuthStore((state) => state);
@@ -36,6 +37,7 @@ export default function App() {
         <Route path="/new-topic" element={<NewTopic />} />
         <Route path="courses/:courseId" element={<CourseDetail />} />
         <Route path="/new-course" element={<NewCourse />} />
+        <Route path="/new-review/:courseId" element={<NewReview />} />
       </Routes>
     </>
   );
