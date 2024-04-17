@@ -19,9 +19,9 @@ export default function Header() {
             </li>
             {isLoggedIn ? (
               <>
-                <li>
+                {/* <li>
                   <NavLink to="/register">Nova review</NavLink>
-                </li>
+                </li> */}
                 <li>
                   <UserNav name={user?.name} email={user?.email} />
                 </li>

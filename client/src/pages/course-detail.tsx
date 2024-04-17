@@ -65,6 +65,13 @@ export default function CourseDetail() {
 
             <p className="text-justify">{course.description}</p>
 
+            <div>
+              <h3>
+                Nota média:{" "}
+                {course.averageRating || "Sem notas para este curso"}
+              </h3>
+            </div>
+
             <div className="space-x-1">
               {course.tags.split(",").map((tag) => (
                 <Badge key={tag}>{tag}</Badge>

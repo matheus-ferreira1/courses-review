@@ -53,16 +53,15 @@ export class CourseRepository implements ICourseRepository {
   }
 
   async findCourseById(id: string): Promise<Course | null> {
-    const course = await prisma.course.findUnique({
+    return prisma.course.findUnique({
       where: {
         id,
       },
       include: {
         educator: true,
+        reviews: true,
       },
     });
-
-    return course;
   }
 
   async findCourseByEducator(educatorId: string): Promise<Course[] | null> {

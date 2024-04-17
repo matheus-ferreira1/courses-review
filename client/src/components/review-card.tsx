@@ -16,7 +16,7 @@ export default function ReviewCard({ review }: { review: Review }) {
         <h6 className="text-muted-foreground">{timeAgo}</h6>
       </div>
       <Separator className="my-1" />
-      <h3>Nota: {review.rating}</h3>
+      <h3 className="font-bold">Nota: {review.rating}/5</h3>
       <p>{review.description}</p>
     </article>
   );
