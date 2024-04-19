@@ -4,7 +4,6 @@ import { Link } from "react-router-dom";
 
 import { useGetEducators } from "@/services/useGetEducators";
 
-import Layout from "@/components/layout";
 import { buttonVariants } from "@/components/ui/button";
 import EducatorCard from "@/components/educator-card";
 import EducatorSkeleton from "@/components/educator-skeleton";
@@ -25,30 +24,28 @@ export default function Educators() {
   }
 
   return (
-    <Layout>
-      <div className="space-y-4 my-10 container">
-        <div className="flex items-center justify-between">
-          <h1 className="text-2xl font-extrabold tracking-tight lg:text-4xl">
-            Exibindo todos os educadores
-          </h1>
-          <Link
-            className={buttonVariants({ variant: "outline" })}
-            to="/new-educator"
-          >
-            <PlusCircle size={20} strokeWidth={1.5} className="mr-2" />
-            Novo
-          </Link>
-        </div>
-        {isPending ? (
-          <EducatorSkeleton />
-        ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-            {educators.map((educator) => (
-              <EducatorCard key={educator.id} educator={educator} />
-            ))}
-          </div>
-        )}
+    <div className="space-y-4 my-10 container">
+      <div className="flex items-center justify-between">
+        <h1 className="text-2xl font-extrabold tracking-tight lg:text-4xl">
+          Exibindo todos os educadores
+        </h1>
+        <Link
+          className={buttonVariants({ variant: "outline" })}
+          to="/new-educator"
+        >
+          <PlusCircle size={20} strokeWidth={1.5} className="mr-2" />
+          Novo
+        </Link>
       </div>
-    </Layout>
+      {isPending ? (
+        <EducatorSkeleton />
+      ) : (
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+          {educators.map((educator) => (
+            <EducatorCard key={educator.id} educator={educator} />
+          ))}
+        </div>
+      )}
+    </div>
   );
 }

@@ -18,12 +18,19 @@ export const isAuthenticated = (
   response: Response,
   next: NextFunction
 ) => {
-  const authHeader = request.headers.authorization;
-  if (!authHeader) {
-    throw new AppError("Failed to verify access token", 401);
+  // const authHeader = request.headers.authorization;
+  // if (!authHeader) {
+  //   throw new AppError("Failed to verify access token", 401);
+  // }
+
+  // const token = authHeader.replace("Bearer ", "");
+
+  const token = request.cookies["auth-token"];
+
+  if (!token) {
+    throw new AppError("Failed to verify access token teste", 401);
   }
 
-  const token = authHeader.replace("Bearer ", "");
   try {
     const decodedToken = verify(token, authConfig.jwt.secret as Secret);
     const { sub } = decodedToken as JwtPayloadProps;
@@ -39,6 +46,7 @@ export const isAuthenticated = (
     if (err instanceof JsonWebTokenError) {
       throw new AppError("Invalid access token", 401);
     }
+
     throw new AppError("Failed to verify access token", 401);
   }
 };

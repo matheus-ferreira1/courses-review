@@ -7,7 +7,6 @@ import { Loader2 } from "lucide-react";
 
 import { useAuthStore } from "@/stores/auth-store";
 
-import Layout from "@/components/layout";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -86,29 +85,27 @@ export default function NewTopic() {
   });
 
   return (
-    <Layout>
-      <div className="space-y-4 my-10 container w-full sm:w-[641px]">
-        <h1 className="text-2xl font-extrabold tracking-tight lg:text-4xl">
-          Cadastro de novo tópico
-        </h1>
-        <form className="flex flex-col gap-5" onSubmit={onSubmit}>
-          <Label htmlFor="name">Nome</Label>
-          <Input
-            type="text"
-            id="name"
-            className="border w-full py-1 px-2 font-normal -mt-3"
-            {...register("name", { required: "Este campo é obrigatório" })}
-          />
-          {errors.name && (
-            <span className="text-red-500 -mt-5 font-bold">
-              {errors.name.message}
-            </span>
-          )}
-          <Button disabled={isPending}>
-            {isPending ? <Loader2 className="animate-spin" /> : "Cadastrar"}
-          </Button>
-        </form>
-      </div>
-    </Layout>
+    <div className="space-y-4 my-10 container w-full sm:w-[641px]">
+      <h1 className="text-2xl font-extrabold tracking-tight lg:text-4xl">
+        Cadastro de novo tópico
+      </h1>
+      <form className="flex flex-col gap-5" onSubmit={onSubmit}>
+        <Label htmlFor="name">Nome</Label>
+        <Input
+          type="text"
+          id="name"
+          className="border w-full py-1 px-2 font-normal -mt-3"
+          {...register("name", { required: "Este campo é obrigatório" })}
+        />
+        {errors.name && (
+          <span className="text-red-500 -mt-5 font-bold">
+            {errors.name.message}
+          </span>
+        )}
+        <Button disabled={isPending}>
+          {isPending ? <Loader2 className="animate-spin" /> : "Cadastrar"}
+        </Button>
+      </form>
+    </div>
   );
 }

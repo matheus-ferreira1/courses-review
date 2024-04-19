@@ -11,7 +11,6 @@ import { useGetEducators } from "@/services/useGetEducators";
 import { useGetTopics } from "@/services/useGetTopics";
 import { useAuthStore } from "@/stores/auth-store";
 
-import Layout from "@/components/layout";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/components/ui/use-toast";
@@ -121,162 +120,160 @@ export default function NewCourse() {
   };
 
   return (
-    <Layout>
-      <div className="space-y-4 my-10 container w-full sm:w-[641px]">
-        <h1 className="text-2xl font-extrabold tracking-tight lg:text-4xl">
-          Cadastro de novo curso
-        </h1>
+    <div className="space-y-4 my-10 container w-full sm:w-[641px]">
+      <h1 className="text-2xl font-extrabold tracking-tight lg:text-4xl">
+        Cadastro de novo curso
+      </h1>
 
-        <Form {...form}>
-          <form
-            className="flex flex-col gap-5"
-            onSubmit={form.handleSubmit(onSubmit)}
-          >
-            <FormField
-              control={form.control}
-              name="title"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel htmlFor="title">Título</FormLabel>
-                  <FormControl>
-                    <Input {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="description"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel htmlFor="description">Descrição</FormLabel>
-                  <FormControl>
-                    <Textarea {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+      <Form {...form}>
+        <form
+          className="flex flex-col gap-5"
+          onSubmit={form.handleSubmit(onSubmit)}
+        >
+          <FormField
+            control={form.control}
+            name="title"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel htmlFor="title">Título</FormLabel>
+                <FormControl>
+                  <Input {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="description"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel htmlFor="description">Descrição</FormLabel>
+                <FormControl>
+                  <Textarea {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
 
-            <div className="flex items-start justify-between gap-4">
-              <div className="w-full">
-                <FormField
-                  control={form.control}
-                  name="price"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel htmlFor="price">Preço</FormLabel>
-                      <FormControl>
-                        <Input
-                          type="number"
-                          step="0.01"
-                          {...field}
-                          onChange={(e) =>
-                            field.onChange(parseFloat(e.target.value))
-                          }
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </div>
-              <div className="w-full">
-                <FormField
-                  control={form.control}
-                  name="topicName"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel htmlFor="topicName">Tópico</FormLabel>
-                      <Select
-                        onValueChange={field.onChange}
-                        disabled={topicQuery.isPending}
-                      >
-                        <FormControl>
-                          <SelectTrigger>
-                            <SelectValue placeholder="Selecione um tópico" />
-                          </SelectTrigger>
-                        </FormControl>
-                        <SelectContent>
-                          {topicQuery.data?.map((topic) => (
-                            <SelectItem key={topic.id} value={topic.name}>
-                              {topic.name}
-                            </SelectItem>
-                          ))}
-                          <Separator className="mb-1" />
-                          <Link
-                            to="/new-topic"
-                            className="w-full text-sm hover:underline pl-8 leading-6"
-                          >
-                            Cadastrar novo tópico
-                          </Link>
-                        </SelectContent>
-                      </Select>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </div>
-            </div>
-
-            <FormField
-              control={form.control}
-              name="educatorName"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel htmlFor="educatorName">Autor</FormLabel>
-                  <Select
-                    disabled={educatorQuery.isPending}
-                    onValueChange={field.onChange}
-                  >
+          <div className="flex items-start justify-between gap-4">
+            <div className="w-full">
+              <FormField
+                control={form.control}
+                name="price"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel htmlFor="price">Preço</FormLabel>
                     <FormControl>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Selecione um autor" />
-                      </SelectTrigger>
+                      <Input
+                        type="number"
+                        step="0.01"
+                        {...field}
+                        onChange={(e) =>
+                          field.onChange(parseFloat(e.target.value))
+                        }
+                      />
                     </FormControl>
-                    <SelectContent>
-                      {educatorQuery.data?.map((educator) => (
-                        <SelectItem key={educator.id} value={educator.name}>
-                          {educator.name}
-                        </SelectItem>
-                      ))}
-                      <Separator className="mb-1" />
-                      <Link
-                        to="/new-educator"
-                        className="w-full text-sm hover:underline pl-8 leading-6"
-                      >
-                        Cadastrar novo autor
-                      </Link>
-                    </SelectContent>
-                  </Select>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="tags"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel htmlFor="tags">Tags</FormLabel>
-                  <FormControl>
-                    <Input
-                      placeholder="Insira as tags separadas por vírgula..."
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
+            <div className="w-full">
+              <FormField
+                control={form.control}
+                name="topicName"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel htmlFor="topicName">Tópico</FormLabel>
+                    <Select
+                      onValueChange={field.onChange}
+                      disabled={topicQuery.isPending}
+                    >
+                      <FormControl>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Selecione um tópico" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        {topicQuery.data?.map((topic) => (
+                          <SelectItem key={topic.id} value={topic.name}>
+                            {topic.name}
+                          </SelectItem>
+                        ))}
+                        <Separator className="mb-1" />
+                        <Link
+                          to="/new-topic"
+                          className="w-full text-sm hover:underline pl-8 leading-6"
+                        >
+                          Cadastrar novo tópico
+                        </Link>
+                      </SelectContent>
+                    </Select>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
+          </div>
 
-            <Button type="submit" disabled={isPending}>
-              {isPending ? <Loader2 className="animate-spin" /> : "Cadastrar"}
-            </Button>
-          </form>
-        </Form>
-      </div>
-    </Layout>
+          <FormField
+            control={form.control}
+            name="educatorName"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel htmlFor="educatorName">Autor</FormLabel>
+                <Select
+                  disabled={educatorQuery.isPending}
+                  onValueChange={field.onChange}
+                >
+                  <FormControl>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Selecione um autor" />
+                    </SelectTrigger>
+                  </FormControl>
+                  <SelectContent>
+                    {educatorQuery.data?.map((educator) => (
+                      <SelectItem key={educator.id} value={educator.name}>
+                        {educator.name}
+                      </SelectItem>
+                    ))}
+                    <Separator className="mb-1" />
+                    <Link
+                      to="/new-educator"
+                      className="w-full text-sm hover:underline pl-8 leading-6"
+                    >
+                      Cadastrar novo autor
+                    </Link>
+                  </SelectContent>
+                </Select>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="tags"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel htmlFor="tags">Tags</FormLabel>
+                <FormControl>
+                  <Input
+                    placeholder="Insira as tags separadas por vírgula..."
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <Button type="submit" disabled={isPending}>
+            {isPending ? <Loader2 className="animate-spin" /> : "Cadastrar"}
+          </Button>
+        </form>
+      </Form>
+    </div>
   );
 }

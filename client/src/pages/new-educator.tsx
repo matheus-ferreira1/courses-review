@@ -7,7 +7,6 @@ import Cookies from "js-cookie";
 
 import { useAuthStore } from "@/stores/auth-store";
 
-import Layout from "@/components/layout";
 import { useToast } from "@/components/ui/use-toast";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -91,54 +90,52 @@ export default function NewEducator() {
   });
 
   return (
-    <Layout>
-      <div className="space-y-4 my-10 container w-full sm:w-[641px]">
-        <h1 className="text-2xl font-extrabold tracking-tight lg:text-4xl">
-          Cadastro de novo educador
-        </h1>
-        <form className="flex flex-col gap-5" onSubmit={onSubmit}>
-          <Label htmlFor="name">Nome</Label>
-          <Input
-            type="text"
-            id="name"
-            className="border w-full py-1 px-2 font-normal -mt-3"
-            {...register("name", { required: "Este campo é obrigatório" })}
-          />
-          {errors.name && (
-            <span className="text-red-500 -mt-5 font-bold">
-              {errors.name.message}
-            </span>
-          )}
-          <Label htmlFor="description">Descrição</Label>
-          <Textarea
-            id="description"
-            className="border w-full py-1 px-2 font-normal -mt-3"
-            {...register("description", {
-              required: "Este campo é obrigatório",
-            })}
-          />
-          {errors.description && (
-            <span className="text-red-500 -mt-5 font-bold">
-              {errors.description.message}
-            </span>
-          )}
-          <Label htmlFor="imgUrl">Link da imagem</Label>
-          <Input
-            type="text"
-            id="imgUrl"
-            className="border w-full py-1 px-2 font-normal -mt-3"
-            {...register("imgUrl", { required: "Este campo é obrigatório" })}
-          />
-          {errors.imgUrl && (
-            <span className="text-red-500 -mt-5 font-bold">
-              {errors.imgUrl.message}
-            </span>
-          )}
-          <Button disabled={isPending}>
-            {isPending ? <Loader2 className="animate-spin" /> : "Cadastrar"}
-          </Button>
-        </form>
-      </div>
-    </Layout>
+    <div className="space-y-4 my-10 container w-full sm:w-[641px]">
+      <h1 className="text-2xl font-extrabold tracking-tight lg:text-4xl">
+        Cadastro de novo educador
+      </h1>
+      <form className="flex flex-col gap-5" onSubmit={onSubmit}>
+        <Label htmlFor="name">Nome</Label>
+        <Input
+          type="text"
+          id="name"
+          className="border w-full py-1 px-2 font-normal -mt-3"
+          {...register("name", { required: "Este campo é obrigatório" })}
+        />
+        {errors.name && (
+          <span className="text-red-500 -mt-5 font-bold">
+            {errors.name.message}
+          </span>
+        )}
+        <Label htmlFor="description">Descrição</Label>
+        <Textarea
+          id="description"
+          className="border w-full py-1 px-2 font-normal -mt-3"
+          {...register("description", {
+            required: "Este campo é obrigatório",
+          })}
+        />
+        {errors.description && (
+          <span className="text-red-500 -mt-5 font-bold">
+            {errors.description.message}
+          </span>
+        )}
+        <Label htmlFor="imgUrl">Link da imagem</Label>
+        <Input
+          type="text"
+          id="imgUrl"
+          className="border w-full py-1 px-2 font-normal -mt-3"
+          {...register("imgUrl", { required: "Este campo é obrigatório" })}
+        />
+        {errors.imgUrl && (
+          <span className="text-red-500 -mt-5 font-bold">
+            {errors.imgUrl.message}
+          </span>
+        )}
+        <Button disabled={isPending}>
+          {isPending ? <Loader2 className="animate-spin" /> : "Cadastrar"}
+        </Button>
+      </form>
+    </div>
   );
 }

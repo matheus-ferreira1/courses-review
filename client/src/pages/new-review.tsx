@@ -9,7 +9,6 @@ import { Loader2 } from "lucide-react";
 
 import { useAuthStore } from "@/stores/auth-store";
 
-import Layout from "@/components/layout";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/components/ui/use-toast";
 import { Textarea } from "@/components/ui/textarea";
@@ -107,66 +106,64 @@ export default function NewReview() {
   };
 
   return (
-    <Layout>
-      <div className="space-y-4 my-10 container w-full sm:w-[641px]">
-        <h1 className="text-2xl font-extrabold tracking-tight lg:text-4xl">
-          Cadastro de nova avaliação
-        </h1>
+    <div className="space-y-4 my-10 container w-full sm:w-[641px]">
+      <h1 className="text-2xl font-extrabold tracking-tight lg:text-4xl">
+        Cadastro de nova avaliação
+      </h1>
 
-        <Form {...form}>
-          <form
-            className="flex flex-col gap-5"
-            onSubmit={form.handleSubmit(onSubmit)}
-          >
-            <FormField
-              control={form.control}
-              name="description"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel htmlFor="description">Descrição</FormLabel>
+      <Form {...form}>
+        <form
+          className="flex flex-col gap-5"
+          onSubmit={form.handleSubmit(onSubmit)}
+        >
+          <FormField
+            control={form.control}
+            name="description"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel htmlFor="description">Descrição</FormLabel>
+                <FormControl>
+                  <Textarea {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="rating"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel htmlFor="rating">Nota</FormLabel>
+                <Select onValueChange={field.onChange}>
                   <FormControl>
-                    <Textarea {...field} />
+                    <SelectTrigger>
+                      <SelectValue placeholder="Selecione uma nota" />
+                    </SelectTrigger>
                   </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+                  <SelectContent>
+                    {Array.from({ length: 5 }, (_, i) => (
+                      <SelectItem key={i} value={String(i + 1)}>
+                        {i + 1}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
 
-            <FormField
-              control={form.control}
-              name="rating"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel htmlFor="rating">Nota</FormLabel>
-                  <Select onValueChange={field.onChange}>
-                    <FormControl>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Selecione uma nota" />
-                      </SelectTrigger>
-                    </FormControl>
-                    <SelectContent>
-                      {Array.from({ length: 5 }, (_, i) => (
-                        <SelectItem key={i} value={String(i + 1)}>
-                          {i + 1}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            <Button type="submit" disabled={isPending}>
-              {isPending ? (
-                <Loader2 className="animate-spin" />
-              ) : (
-                "Publicar avaliação"
-              )}
-            </Button>
-          </form>
-        </Form>
-      </div>
-    </Layout>
+          <Button type="submit" disabled={isPending}>
+            {isPending ? (
+              <Loader2 className="animate-spin" />
+            ) : (
+              "Publicar avaliação"
+            )}
+          </Button>
+        </form>
+      </Form>
+    </div>
   );
 }

@@ -1,3 +1,4 @@
+import { api } from "@/lib/axios";
 import { create } from "zustand";
 
 export interface User {
@@ -30,25 +31,16 @@ export const useAuthStore = create<IAuthStore>((set) => ({
     set({ user, token, isLoggedIn: true });
   },
   checkAccessToken: async () => {
-    const token = localStorage.getItem("access-token");
     try {
-      const res = await fetch(
-        `${import.meta.env.VITE_API_BASE_URL}/users/validate-token`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      const res = await api.get("/users/validate-token");
 
-      if (res.ok) {
+      if (res.status === 200) {
         set({ isLoggedIn: true });
       } else {
-        set({ isLoggedIn: false });
-        set({ user: null, token: null });
+        set({ user: null, token: null, isLoggedIn: false });
       }
-    } catch (error) {
-      console.log(error);
+    } catch (err) {
+      console.log(err);
     }
   },
 }));
