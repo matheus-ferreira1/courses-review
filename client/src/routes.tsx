@@ -14,11 +14,13 @@ import NewTopic from "./pages/new-topic";
 import CourseDetail from "./pages/course-detail";
 import NewCourse from "./pages/new-course";
 import NewReview from "./pages/new-review";
+import NotFoundPage from "./pages/404";
 
 export const router = createBrowserRouter([
   {
     path: "/",
     element: <AppLayout />,
+    errorElement: <NotFoundPage />,
     children: [
       {
         path: "/",

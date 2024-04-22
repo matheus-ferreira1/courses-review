@@ -18,13 +18,6 @@ export const isAuthenticated = (
   response: Response,
   next: NextFunction
 ) => {
-  // const authHeader = request.headers.authorization;
-  // if (!authHeader) {
-  //   throw new AppError("Failed to verify access token", 401);
-  // }
-
-  // const token = authHeader.replace("Bearer ", "");
-
   const token = request.cookies["auth-token"];
 
   if (!token) {
