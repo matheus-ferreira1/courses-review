@@ -2,7 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { Loader2 } from "lucide-react";
 
-import { useGetCourseById } from "@/services/useGetCourseById";
+import { getCourseById } from "@/api/get-course-by-id";
 
 import { buttonVariants } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
@@ -13,7 +13,7 @@ export default function CourseDetail() {
   const { courseId } = useParams();
   const navigate = useNavigate();
 
-  const useQueryFn = () => useGetCourseById(courseId!);
+  const useQueryFn = () => getCourseById(courseId!);
 
   const {
     isPending,
@@ -27,7 +27,9 @@ export default function CourseDetail() {
 
   if (isError) {
     return (
-      <div className="mx-auto">Erro ao carregar curso: {error.message}</div>
+      <div className="py-10 mx-auto">
+        Erro ao carregar curso: {error.message}
+      </div>
     );
   }
 
