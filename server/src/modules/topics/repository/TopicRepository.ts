@@ -1,6 +1,10 @@
 import { Topic } from "@prisma/client";
 import { prisma } from "../../../db";
-import { CreateTopicDTO, ITopicRepository } from "./ITopicRepository";
+import {
+  CreateTopicDTO,
+  FeaturedTopicsDTO,
+  ITopicRepository,
+} from "./ITopicRepository";
 
 export class TopicRepository implements ITopicRepository {
   private static INSTANCE: TopicRepository;
@@ -28,6 +32,26 @@ export class TopicRepository implements ITopicRepository {
     const topics = await prisma.topic.findMany();
 
     return topics;
+  }
+
+  async listFeaturedTopics(): Promise<FeaturedTopicsDTO[]> {
+    const featuredTopics = await prisma.topic.findMany({
+      take: 5,
+      select: {
+        id: true,
+        name: true,
+        _count: {
+          select: { courses: true },
+        },
+      },
+      orderBy: {
+        courses: {
+          _count: "desc",
+        },
+      },
+    });
+
+    return featuredTopics;
   }
 
   async findTopicById(id: string): Promise<Topic | null> {

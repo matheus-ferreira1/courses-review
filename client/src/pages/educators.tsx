@@ -1,12 +1,11 @@
 import { useQuery } from "@tanstack/react-query";
-import { PlusCircle } from "lucide-react";
 import { Link } from "react-router-dom";
+import { PlusCircle } from "lucide-react";
 
 import { useGetEducators } from "@/services/useGetEducators";
+import { cn } from "@/lib/utils";
 
 import { buttonVariants } from "@/components/ui/button";
-import EducatorCard from "@/components/educator-card";
-import EducatorSkeleton from "@/components/educator-skeleton";
 
 export default function Educators() {
   const {
@@ -26,7 +25,7 @@ export default function Educators() {
   return (
     <div className="space-y-4 my-10 container">
       <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-extrabold tracking-tight lg:text-4xl">
+        <h1 className="text-2xl font-bold tracking-tight lg:text-4xl">
           Exibindo todos os educadores
         </h1>
         <Link
@@ -37,15 +36,21 @@ export default function Educators() {
           Novo
         </Link>
       </div>
-      {isPending ? (
-        <EducatorSkeleton />
-      ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-          {educators.map((educator) => (
-            <EducatorCard key={educator.id} educator={educator} />
-          ))}
-        </div>
-      )}
+      <ul className="space-y-2 mb-8">
+        {educators?.map((educator) => (
+          <li key={educator.id}>
+            <Link
+              to={`/educators/${educator.id}`}
+              className={cn(
+                buttonVariants({ variant: "outline" }),
+                "flex items-center justify-start text-lg"
+              )}
+            >
+              {educator.name}
+            </Link>
+          </li>
+        ))}
+      </ul>
     </div>
   );
 }

@@ -1,5 +1,9 @@
 import { Educator } from "@prisma/client";
-import { CreateEducatorDTO, IEducatorRepository } from "./IEducatorRepository";
+import {
+  CreateEducatorDTO,
+  FeaturedEducatorsDTO,
+  IEducatorRepository,
+} from "./IEducatorRepository";
 import { prisma } from "../../../db";
 
 export class EducatorRepository implements IEducatorRepository {
@@ -36,6 +40,26 @@ export class EducatorRepository implements IEducatorRepository {
     const educators = await prisma.educator.findMany();
 
     return educators;
+  }
+
+  async listFeaturedEducators(): Promise<FeaturedEducatorsDTO[]> {
+    const featuredEducators = await prisma.educator.findMany({
+      take: 5,
+      select: {
+        id: true,
+        name: true,
+        _count: {
+          select: { courses: true },
+        },
+      },
+      orderBy: {
+        courses: {
+          _count: "desc",
+        },
+      },
+    });
+
+    return featuredEducators;
   }
 
   async findEducatorByName(name: string): Promise<Educator | null> {

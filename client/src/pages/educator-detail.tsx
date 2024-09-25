@@ -43,21 +43,25 @@ export default function EducatorDetail() {
         </div>
       ) : (
         <>
+          {/* <div className="flex items-end gap-4"> */}
           <img
             src={educator.imgUrl}
             alt={`Imagem de perfil de ${educator.name}`}
             className="rounded-full size-40 object-cover"
           />
-          <h1 className="text-2xl font-extrabold tracking-tight lg:text-4xl">
+          <h1 className="text-2xl font-bold tracking-tight lg:text-4xl">
             {educator?.name}
           </h1>
+          {/* </div> */}
 
           <p className="text-justify">{educator?.description}</p>
 
           <Separator className="my-4" />
 
           <div className="flex items-center justify-between">
-            <h2 className="text-2xl font-extrabold tracking-tight">Cursos</h2>
+            <h2 className="text-2xl font-semibold tracking-tight">
+              Cursos por {educator?.name}
+            </h2>
             <Link
               className={buttonVariants({ variant: "outline" })}
               to="/new-course"

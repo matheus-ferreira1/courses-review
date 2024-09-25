@@ -1,10 +1,10 @@
 import { Link } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 
-import { useGetTopics } from "@/services/useGetTopics";
+import { useGetFeaturedTopics } from "@/services/useGetFeaturedTopics";
+import { cn } from "@/lib/utils";
 
 import { buttonVariants } from "./ui/button";
-import TopicCard from "./topic-card";
 import TopicSkeleton from "./topic-skeleton";
 
 const FeaturedTopics = () => {
@@ -14,8 +14,8 @@ const FeaturedTopics = () => {
     data: topics,
     error,
   } = useQuery({
-    queryKey: ["topics"],
-    queryFn: useGetTopics,
+    queryKey: ["featuredTopics"],
+    queryFn: useGetFeaturedTopics,
   });
 
   if (isError) {
@@ -25,7 +25,7 @@ const FeaturedTopics = () => {
   return (
     <div className="space-y-4 my-10 container">
       <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-extrabold tracking-tight lg:text-4xl">
+        <h1 className="text-2xl font-bold tracking-tight lg:text-4xl">
           Principais tópicos
         </h1>
         <Link className={buttonVariants({ variant: "outline" })} to="/topics">
@@ -36,9 +36,18 @@ const FeaturedTopics = () => {
       {isPending ? (
         <TopicSkeleton />
       ) : (
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 lg:grid-cols-7 gap-4">
-          {topics.slice(0, 7).map((topic) => (
-            <TopicCard key={topic.id} topic={topic} />
+        <div className="space-y-2">
+          {topics.map((topic) => (
+            <Link
+              key={topic.id}
+              to={`/topics/${topic.id}`}
+              className={cn(
+                buttonVariants({ variant: "outline" }),
+                "flex items-center justify-start text-lg"
+              )}
+            >
+              <h2 className="text-lg font-semibold">{topic.name}</h2>
+            </Link>
           ))}
         </div>
       )}

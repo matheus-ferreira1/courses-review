@@ -23,7 +23,7 @@ export default function EducatorCard({
       className={cn(className)}
     >
       <Card className="transition-all hover:border-primary hover:border hover:shadow-lg ">
-        <CardContent className="flex items-center justify-center gap-4 p-4">
+        <CardContent className="flex flex-col items-center justify-center gap-4 p-4">
           <img
             src={educator.imgUrl}
             alt={`Imagem de perfil de ${educator.name}`}

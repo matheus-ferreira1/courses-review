@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import Cookies from "js-cookie";
 import { z } from "zod";
@@ -30,7 +30,6 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { Separator } from "@/components/ui/separator";
 
 const formSchema = z.object({
   title: z.string().min(1, { message: "O título é obrigatório" }),
@@ -121,7 +120,7 @@ export default function NewCourse() {
 
   return (
     <div className="space-y-4 my-10 container w-full sm:w-[641px]">
-      <h1 className="text-2xl font-extrabold tracking-tight lg:text-4xl">
+      <h1 className="text-2xl font-bold tracking-tight lg:text-4xl">
         Cadastro de novo curso
       </h1>
 
@@ -198,17 +197,14 @@ export default function NewCourse() {
                       </FormControl>
                       <SelectContent>
                         {topicQuery.data?.map((topic) => (
-                          <SelectItem key={topic.id} value={topic.name}>
+                          <SelectItem
+                            key={topic.id}
+                            value={topic.name}
+                            className="truncate"
+                          >
                             {topic.name}
                           </SelectItem>
                         ))}
-                        <Separator className="mb-1" />
-                        <Link
-                          to="/new-topic"
-                          className="w-full text-sm hover:underline pl-8 leading-6"
-                        >
-                          Cadastrar novo tópico
-                        </Link>
                       </SelectContent>
                     </Select>
                     <FormMessage />
@@ -239,13 +235,6 @@ export default function NewCourse() {
                         {educator.name}
                       </SelectItem>
                     ))}
-                    <Separator className="mb-1" />
-                    <Link
-                      to="/new-educator"
-                      className="w-full text-sm hover:underline pl-8 leading-6"
-                    >
-                      Cadastrar novo autor
-                    </Link>
                   </SelectContent>
                 </Select>
                 <FormMessage />

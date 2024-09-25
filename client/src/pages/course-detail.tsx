@@ -47,7 +47,7 @@ export default function CourseDetail() {
         </div>
       ) : (
         <>
-          <h1 className="text-2xl font-extrabold tracking-tight lg:text-4xl">
+          <h1 className="text-2xl font-bold tracking-tight lg:text-4xl">
             {course.title}
           </h1>
           <div className="flex items-center justify-between">

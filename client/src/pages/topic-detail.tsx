@@ -43,7 +43,7 @@ export default function TopicDetail() {
         Voltar
       </button>
 
-      <h1 className="text-2xl font-extrabold tracking-tight lg:text-4xl">
+      <h1 className="text-2xl font-bold tracking-tight lg:text-4xl">
         Exibindo cursos do tópico:{" "}
         <span className="underline uppercase tracking-wide">{topic?.name}</span>
       </h1>
@@ -51,7 +51,7 @@ export default function TopicDetail() {
       <Separator className="my-4" />
 
       <div className="flex items-center justify-between">
-        <h2 className="text-2xl font-extrabold tracking-tight">Cursos</h2>
+        <h2 className="text-2xl font-bold tracking-tight">Cursos</h2>
         <Link
           className={buttonVariants({ variant: "outline" })}
           to="/new-course"

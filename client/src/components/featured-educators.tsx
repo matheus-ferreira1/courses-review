@@ -1,10 +1,10 @@
 import { Link } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 
-import { useGetEducators } from "@/services/useGetEducators";
+import { cn } from "@/lib/utils";
+import { useGetFeaturedEducators } from "@/services/useGetFeaturedEducators";
 
 import { buttonVariants } from "./ui/button";
-import EducatorCard from "./educator-card";
 import EducatorSkeleton from "./educator-skeleton";
 
 const FeaturedEducators = () => {
@@ -14,8 +14,8 @@ const FeaturedEducators = () => {
     data: educators,
     error,
   } = useQuery({
-    queryKey: ["educators"],
-    queryFn: useGetEducators,
+    queryKey: ["featuredEducators"],
+    queryFn: useGetFeaturedEducators,
   });
 
   if (isError) {
@@ -29,7 +29,7 @@ const FeaturedEducators = () => {
   return (
     <div className="space-y-4 my-10 container">
       <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-extrabold tracking-tight lg:text-4xl">
+        <h1 className="text-2xl font-bold tracking-tight lg:text-4xl">
           Principais educadores
         </h1>
         <Link
@@ -43,9 +43,18 @@ const FeaturedEducators = () => {
       {isPending ? (
         <EducatorSkeleton />
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
-          {educators.slice(0, 5).map((educator) => (
-            <EducatorCard key={educator.id} educator={educator} />
+        <div className="space-y-2">
+          {educators.map((educator) => (
+            <Link
+              key={educator.id}
+              to={`/educators/${educator.id}`}
+              className={cn(
+                buttonVariants({ variant: "outline" }),
+                "flex items-center justify-start text-lg"
+              )}
+            >
+              <h2 className="text-lg font-semibold">{educator.name}</h2>
+            </Link>
           ))}
         </div>
       )}

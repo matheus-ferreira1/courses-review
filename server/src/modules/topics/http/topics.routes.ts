@@ -5,11 +5,16 @@ import { isAuthenticated } from "../../../shared/http/middlewares/isAuthenticate
 import { listTopicsController } from "../useCases/listTopics";
 import { createTopicController } from "../useCases/createTopic";
 import { findTopicByIdController } from "../useCases/findTopicById";
+import { listFeaturedTopicsController } from "../useCases/listFeaturedTopics";
 
 const topicRouter = Router();
 
 topicRouter.get("/", (req, res) => {
   return listTopicsController.handle(req, res);
+});
+
+topicRouter.get("/featured", (req, res) => {
+  return listFeaturedTopicsController.handle(req, res);
 });
 
 topicRouter.post(

@@ -107,7 +107,7 @@ export default function NewReview() {
 
   return (
     <div className="space-y-4 my-10 container w-full sm:w-[641px]">
-      <h1 className="text-2xl font-extrabold tracking-tight lg:text-4xl">
+      <h1 className="text-2xl font-bold tracking-tight lg:text-4xl mb-8">
         Cadastro de nova avaliação
       </h1>
 

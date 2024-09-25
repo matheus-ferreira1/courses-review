@@ -7,6 +7,14 @@ export type CreateEducatorDTO = {
   imgUrl?: string;
 };
 
+export type FeaturedEducatorsDTO = {
+  id: string;
+  name: string;
+  _count: {
+    courses: number;
+  };
+};
+
 export interface IEducatorRepository {
   createEducator(data: CreateEducatorDTO): Promise<Educator>;
   listEducators(): Promise<Educator[]>;

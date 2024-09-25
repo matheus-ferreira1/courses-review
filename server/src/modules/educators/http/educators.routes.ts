@@ -7,11 +7,16 @@ import { listEducatorsController } from "../useCases/listEducators";
 import { createEducatorController } from "../useCases/createEducator";
 import { findEducatorByIdController } from "../useCases/findEducatorById";
 import { findEducatorByNameController } from "../useCases/findEducatorByName";
+import { listFeaturedEducatorsController } from "../useCases/listFeaturedEducators";
 
 const educatorRouter = Router();
 
 educatorRouter.get("/", (req, res) => {
   return listEducatorsController.handle(req, res);
+});
+
+educatorRouter.get("/featured", (req, res) => {
+  return listFeaturedEducatorsController.handle(req, res);
 });
 
 educatorRouter.get(
